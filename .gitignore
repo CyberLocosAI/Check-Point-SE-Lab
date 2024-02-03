@@ -28,3 +28,4 @@ scratch_pad*.py
 
 # Negations - exceptions to the gitignore
 !hosts.ini
+!terraform.exe
