@@ -1,0 +1,30 @@
+# Ignore these file extensions
+*.xls
+*.xlsm
+*.csv
+*.txt
+*.bak
+*.pdf
+*.ini
+*.zip
+*.exe
+*.pem
+*.ppk
+
+# Python cache
+__pycache__/
+
+# PyCharm
+.idea/
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+*.lock.hcl
+.terraform/
+
+# Trav's scratch pads
+scratch_pad*.py
+
+# Negations - exceptions to the gitignore
+!hosts.ini

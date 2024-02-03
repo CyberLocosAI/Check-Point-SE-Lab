@@ -1,0 +1,332 @@
+{
+  "vpc_details": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "vpc-0238d2ceb03162f5b": [
+          "object",
+          {
+            "cidr_block": "string",
+            "dmz_subnet": [
+              "object",
+              {
+                "cidr_block": "string",
+                "id": "string"
+              }
+            ],
+            "dns_hostnames": "bool",
+            "dns_support": "bool",
+            "external_subnets": [
+              "object",
+              {
+                "subnet-0bb868d31a8c171cd": [
+                  "object",
+                  {
+                    "cidr_block": "string",
+                    "instances": [
+                      "tuple",
+                      [
+                        "string"
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ],
+            "id": "string",
+            "internal_subnet": [
+              "object",
+              {
+                "cidr_block": "string",
+                "id": "string"
+              }
+            ],
+            "internet_gateway": "string"
+          }
+        ],
+        "vpc-062098711d08e2774": [
+          "object",
+          {
+            "cidr_block": "string",
+            "dmz_subnet": [
+              "object",
+              {
+                "cidr_block": "string",
+                "id": "string"
+              }
+            ],
+            "dns_hostnames": "bool",
+            "dns_support": "bool",
+            "external_subnets": [
+              "object",
+              {
+                "subnet-01d3df7b4c2a60071": [
+                  "object",
+                  {
+                    "cidr_block": "string",
+                    "instances": [
+                      "tuple",
+                      [
+                        "string"
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ],
+            "id": "string",
+            "internal_subnet": [
+              "object",
+              {
+                "cidr_block": "string",
+                "id": "string"
+              }
+            ],
+            "internet_gateway": "string"
+          }
+        ],
+        "vpc-0792cfabe29e3c839": [
+          "object",
+          {
+            "cidr_block": "string",
+            "dmz_subnet": [
+              "object",
+              {
+                "cidr_block": "string",
+                "id": "string"
+              }
+            ],
+            "dns_hostnames": "bool",
+            "dns_support": "bool",
+            "external_subnets": [
+              "object",
+              {
+                "subnet-06461a88319a35078": [
+                  "object",
+                  {
+                    "cidr_block": "string",
+                    "instances": [
+                      "tuple",
+                      [
+                        "string"
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ],
+            "id": "string",
+            "internal_subnet": [
+              "object",
+              {
+                "cidr_block": "string",
+                "id": "string"
+              }
+            ],
+            "internet_gateway": "string"
+          }
+        ],
+        "vpc-0cea26487f07dde5d": [
+          "object",
+          {
+            "cidr_block": "string",
+            "dmz_subnet": [
+              "object",
+              {
+                "cidr_block": "string",
+                "id": "string"
+              }
+            ],
+            "dns_hostnames": "bool",
+            "dns_support": "bool",
+            "external_subnets": [
+              "object",
+              {
+                "subnet-01e0ac59d2331e2af": [
+                  "object",
+                  {
+                    "cidr_block": "string",
+                    "instances": [
+                      "tuple",
+                      [
+                        "string"
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ],
+            "id": "string",
+            "internal_subnet": [
+              "object",
+              {
+                "cidr_block": "string",
+                "id": "string"
+              }
+            ],
+            "internet_gateway": "string"
+          }
+        ],
+        "vpc-0f6404fc349277a48": [
+          "object",
+          {
+            "cidr_block": "string",
+            "dmz_subnet": [
+              "object",
+              {
+                "cidr_block": "string",
+                "id": "string"
+              }
+            ],
+            "dns_hostnames": "bool",
+            "dns_support": "bool",
+            "external_subnets": [
+              "object",
+              {
+                "subnet-023bcdcb9e3e35d9d": [
+                  "object",
+                  {
+                    "cidr_block": "string",
+                    "instances": [
+                      "tuple",
+                      [
+                        "string"
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ],
+            "id": "string",
+            "internal_subnet": [
+              "object",
+              {
+                "cidr_block": "string",
+                "id": "string"
+              }
+            ],
+            "internet_gateway": "string"
+          }
+        ]
+      }
+    ],
+    "value": {
+      "vpc-0238d2ceb03162f5b": {
+        "cidr_block": "10.4.0.0/16",
+        "dmz_subnet": {
+          "cidr_block": "10.4.2.0/24",
+          "id": "subnet-00cc5065fa1503d16"
+        },
+        "dns_hostnames": true,
+        "dns_support": true,
+        "external_subnets": {
+          "subnet-0bb868d31a8c171cd": {
+            "cidr_block": "10.4.0.0/24",
+            "instances": [
+              "18.217.161.232"
+            ]
+          }
+        },
+        "id": "vpc-0238d2ceb03162f5b",
+        "internal_subnet": {
+          "cidr_block": "10.4.1.0/24",
+          "id": "subnet-0365029ee3717584f"
+        },
+        "internet_gateway": "igw-0d14b378ce44d9811"
+      },
+      "vpc-062098711d08e2774": {
+        "cidr_block": "10.1.0.0/16",
+        "dmz_subnet": {
+          "cidr_block": "10.1.2.0/24",
+          "id": "subnet-0058ac789bd6cd8b8"
+        },
+        "dns_hostnames": true,
+        "dns_support": true,
+        "external_subnets": {
+          "subnet-01d3df7b4c2a60071": {
+            "cidr_block": "10.1.0.0/24",
+            "instances": [
+              "18.188.238.134"
+            ]
+          }
+        },
+        "id": "vpc-062098711d08e2774",
+        "internal_subnet": {
+          "cidr_block": "10.1.1.0/24",
+          "id": "subnet-0fd6aea21ee9134c1"
+        },
+        "internet_gateway": "igw-00f8e250edebf4a97"
+      },
+      "vpc-0792cfabe29e3c839": {
+        "cidr_block": "10.2.0.0/16",
+        "dmz_subnet": {
+          "cidr_block": "10.2.2.0/24",
+          "id": "subnet-00597e795da4bf397"
+        },
+        "dns_hostnames": true,
+        "dns_support": true,
+        "external_subnets": {
+          "subnet-06461a88319a35078": {
+            "cidr_block": "10.2.0.0/24",
+            "instances": [
+              "13.59.254.23"
+            ]
+          }
+        },
+        "id": "vpc-0792cfabe29e3c839",
+        "internal_subnet": {
+          "cidr_block": "10.2.1.0/24",
+          "id": "subnet-01e6011c41d3f4fd3"
+        },
+        "internet_gateway": "igw-0adc476154d1cc8c7"
+      },
+      "vpc-0cea26487f07dde5d": {
+        "cidr_block": "10.0.0.0/16",
+        "dmz_subnet": {
+          "cidr_block": "10.0.2.0/24",
+          "id": "subnet-007627adbcd248161"
+        },
+        "dns_hostnames": true,
+        "dns_support": true,
+        "external_subnets": {
+          "subnet-01e0ac59d2331e2af": {
+            "cidr_block": "10.0.0.0/24",
+            "instances": [
+              "3.19.188.196"
+            ]
+          }
+        },
+        "id": "vpc-0cea26487f07dde5d",
+        "internal_subnet": {
+          "cidr_block": "10.0.1.0/24",
+          "id": "subnet-0c3d0e85727cf3289"
+        },
+        "internet_gateway": "igw-06e92ae10b9c3117c"
+      },
+      "vpc-0f6404fc349277a48": {
+        "cidr_block": "10.3.0.0/16",
+        "dmz_subnet": {
+          "cidr_block": "10.3.2.0/24",
+          "id": "subnet-011a6946aabd5e42b"
+        },
+        "dns_hostnames": true,
+        "dns_support": true,
+        "external_subnets": {
+          "subnet-023bcdcb9e3e35d9d": {
+            "cidr_block": "10.3.0.0/24",
+            "instances": [
+              "3.15.174.125"
+            ]
+          }
+        },
+        "id": "vpc-0f6404fc349277a48",
+        "internal_subnet": {
+          "cidr_block": "10.3.1.0/24",
+          "id": "subnet-0ebf4a990c5380133"
+        },
+        "internet_gateway": "igw-071c764c876420f56"
+      }
+    }
+  }
+}
