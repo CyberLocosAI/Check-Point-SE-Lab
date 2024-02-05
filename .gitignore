@@ -10,7 +10,12 @@
 *.exe
 *.pem
 *.ppk
-*.tfvars
+*.info
+*.env
+
+
+# Ignore these filenames
+tf_outputs.json
 
 # Python cache
 __pycache__/
@@ -22,11 +27,13 @@ __pycache__/
 *.tfstate
 *.tfstate.backup
 *.lock.hcl
+*.tfvars
 .terraform/
 
-# Trav's scratch pads
+# Trav's customs
 scratch_pad*.py
+backup/
+archive/
 
 # Negations - exceptions to the gitignore
-!hosts.ini
 !terraform.exe

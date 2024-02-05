@@ -47,3 +47,18 @@ resource "azurerm_subnet" "dmz" {
   virtual_network_name = azurerm_virtual_network.FL-SE-AZURE[count.index].name
   address_prefixes     = ["10.${count.index % 255 + 1}.2.0/24"]
 }
+
+output "vpc_subnet_details" {
+  value = { 
+    for vnet in azurerm_virtual_network.FL-SE-AZURE : 
+      vnet.name => {
+        "address_space" = vnet.address_space
+        "subnets" = {
+          "internal" = [for s in azurerm_subnet.internal : s.address_prefixes if s.virtual_network_name == vnet.name],
+          "external" = [for s in azurerm_subnet.external : s.address_prefixes if s.virtual_network_name == vnet.name],
+          "dmz" = [for s in azurerm_subnet.dmz : s.address_prefixes if s.virtual_network_name == vnet.name]
+        }
+      } 
+  }
+  description = "Each VPC with its name and every subnet assigned to each VPC."
+}

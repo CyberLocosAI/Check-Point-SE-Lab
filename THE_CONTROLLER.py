@@ -161,8 +161,8 @@ if __name__ == '__main__':
     ###########
     ### AWS ###
     ##############################################################################################
-    os.chdir('./aws')
-    load_dotenv('.env')
+    # os.chdir('./aws')
+    # load_dotenv('.env')
 
     
     
@@ -184,16 +184,18 @@ if __name__ == '__main__':
     # ct.run_command(['ansible-playbook', '-i', 'hosts.ini', 'install_docker.yaml'])
     
     # This is the last command for AWS, it exits the directory.
-    os.chdir(os.path.join(os.getcwd(), os.pardir))
+    #os.chdir(os.path.join(os.getcwd(), os.pardir))
 
     #############
     ### AZURE ###
     ##############################################################################################
     os.chdir('./azure')
-    ct.run_command(['terraform', 'apply', '-auto-approve'])
+    # ct.run_command(['terraform', 'apply', '-auto-approve'])
+    # time.sleep(30)
+    ct.run_command(['terraform', 'refresh'])
     ct.save_terraform_output()
 
     ### Place all Azure code here.
 
-    # This is the last command for AWS, it exits the directory.
+    # This is the last command for AZURE, it exits the directory.
     os.chdir(os.path.join(os.getcwd(), os.pardir))
