@@ -190,7 +190,9 @@ if __name__ == '__main__':
     ### AZURE ###
     ##############################################################################################
     os.chdir('./azure')
-    ct.run_command(['terraform', 'apply', '-auto-approve'])
+    # ct.run_command(['terraform', 'apply', '-auto-approve'])
+    # time.sleep(30)
+    ct.run_command(['terraform', 'refresh'])
     ct.save_terraform_output()
 
     ### Place all Azure code here.

@@ -13,7 +13,7 @@
         upgrade: dist
 
     - name: Install required packages
-      apt:
+      apt:0
         name:
           - apt-transport-https
           - ca-certificates

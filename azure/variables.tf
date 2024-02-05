@@ -6,7 +6,7 @@ variable "usernames" {
 variable "resource_count" {
   description = "The number of each resource type to create"
   type        = number
-  default     = 20
+  default     = 1
 }
 
 variable "passwords" {
@@ -59,6 +59,13 @@ variable "vm_size" {
   description = "The size of the virtual machine"
   type        = string
 }
+
+variable "ubuntu_monster_vm_size" {
+  description = "The size of the Ubuntu Monster virtual machine"
+  type        = string
+  default     = "Standard_D2s_v3" # You can set a default value or leave it without to require explicit specification
+}
+
 variable "admin_password" {
   description = "The administrator password for the virtual machine"
   type        = string

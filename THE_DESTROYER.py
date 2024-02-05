@@ -16,6 +16,5 @@ from dotenv import load_dotenv
 
 # Destroy AZURE, comment this section out if you're not working with it.
 os.chdir('./azure')
-#load_dotenv('.env', override=True) If you want to use .env uncomment
 CONTROLLER().run_command(['terraform', 'destroy', '-auto-approve'])
 os.chdir(os.path.join(os.getcwd(), os.pardir))
