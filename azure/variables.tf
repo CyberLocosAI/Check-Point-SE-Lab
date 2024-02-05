@@ -1,10 +1,16 @@
 variable "usernames" {
-  type = list(string)
+  type        = list(string)
   description = "List of usernames for the virtual machines"
 }
 
+variable "resource_count" {
+  description = "The number of each resource type to create"
+  type        = number
+  default     = 20
+}
+
 variable "passwords" {
-  type = list(string)
+  type        = list(string)
   description = "List of passwords for the virtual machines"
 }
 variable "subscription_id" {
@@ -47,7 +53,7 @@ variable "resource_group_name" {
 
 variable "disk_size" {
   description = "The size of the OS disk for the VM in GB"
-  type        = number  # Assuming disk size is a number
+  type        = number # Assuming disk size is a number
 }
 variable "vm_size" {
   description = "The size of the virtual machine"
@@ -60,12 +66,12 @@ variable "admin_password" {
 variable "bootstrap_script" {
   description = "Bootstrap script to run on VM initialization"
   type        = string
-  default     = ""  # You can set a default empty string if the script is optional
+  default     = "" # You can set a default empty string if the script is optional
 }
 variable "pub_ips_resource_group_name" {
   description = "The name of the resource group for public IPs"
   type        = string
-  default     = "pub_IPs"  # You can set a default value or leave it without a default
+  default     = "pub_IPs" # You can set a default value or leave it without a default
 }
 
 # The vm_os_sku variable is already correctly declared in your existing variables.tf
