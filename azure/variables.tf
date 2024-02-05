@@ -74,4 +74,10 @@ variable "pub_ips_resource_group_name" {
   default     = "pub_IPs" # You can set a default value or leave it without a default
 }
 
+variable "ubuntu_monster_vm_size" {
+  description = "The size of the Ubuntu Monster virtual machine"
+  type        = string
+  default     = "Standard_D2s_v3" # You can set a default value or leave it without to require explicit specification
+}
+
 # The vm_os_sku variable is already correctly declared in your existing variables.tf

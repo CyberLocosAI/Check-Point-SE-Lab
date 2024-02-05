@@ -11,9 +11,11 @@
 *.pem
 *.ppk
 *.info
+*.env
+
 
 # Ignore these filenames
-tf_outputs.json
+tf_outputs.*
 
 # Python cache
 __pycache__/
