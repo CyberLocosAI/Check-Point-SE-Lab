@@ -1,0 +1,45 @@
+---
+- name: Install Docker on a remote server
+  hosts: all
+  become: yes
+  vars:
+    ansible_user: instructor
+
+  tasks:
+    - name: Read tfvars file
+      ansible.builtin.slurp:
+        src: /path/to/your/terraform.tfvars
+      register: tfvars_content
+
+    - name: Set admin password from tfvars
+      ansible.builtin.set_fact:
+        admin_password: "{{ (tfvars_content['content'] | b64decode | regex_search('admin_password\\s+=\\s+"([^"]+)"', '\\1'))[0] }}"
+
+    - name: Update the system
+      ansible.builtin.apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Add Docker's official GPG key
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add the Docker repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Install Docker
+      ansible.builtin.apt:
+        name: docker-ce
+        state: present

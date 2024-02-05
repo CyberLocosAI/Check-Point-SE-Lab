@@ -164,8 +164,6 @@ if __name__ == '__main__':
     # os.chdir('./aws')
     # load_dotenv('.env')
 
-    
-    
     ### Terraform
     # This command executes any .tf files in the same directory, be careful!
     # ct.run_command(['terraform', 'apply', '-auto-approve'])
@@ -190,12 +188,10 @@ if __name__ == '__main__':
     ### AZURE ###
     ##############################################################################################
     os.chdir('./azure')
-    # ct.run_command(['terraform', 'apply', '-auto-approve'])
-    # time.sleep(30)
+    ct.run_command(['terraform', 'apply', '-auto-approve'])
+    time.sleep(30)
     ct.run_command(['terraform', 'refresh'])
     ct.save_terraform_output()
-
-    ### Place all Azure code here.
 
     # This is the last command for AZURE, it exits the directory.
     os.chdir(os.path.join(os.getcwd(), os.pardir))
