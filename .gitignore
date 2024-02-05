@@ -10,6 +10,7 @@
 *.exe
 *.pem
 *.ppk
+*.info
 
 # Ignore these filenames
 tf_outputs.json
@@ -30,6 +31,7 @@ __pycache__/
 # Trav's customs
 scratch_pad*.py
 backup/
+archive/
 
 # Negations - exceptions to the gitignore
 !terraform.exe
