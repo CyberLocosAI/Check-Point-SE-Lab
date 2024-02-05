@@ -29,19 +29,19 @@ resource "azurerm_network_interface" "checkpoint_nic" {
 
 
 resource "azurerm_linux_virtual_machine" "checkpoint_vm" {
-  count               = length(azurerm_subnet.external.*.id)
-  name                = "checkpoint-vm-${count.index}"
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  size                = var.vm_size
+  count                 = length(azurerm_subnet.external.*.id)
+  name                  = "checkpoint-vm-${count.index}"
+  resource_group_name   = var.resource_group_name
+  location              = var.location
+  size                  = var.vm_size
   network_interface_ids = [azurerm_network_interface.checkpoint_nic[count.index].id]
 
-  admin_username = "adminuser"
-  admin_password = var.admin_password
+  admin_username                  = "adminuser"
+  admin_password                  = var.admin_password
   disable_password_authentication = false
 
   # Plan information required for VMs created from Marketplace images
-plan {
+  plan {
     name      = "mgmt-byol"
     publisher = "checkpoint"
     product   = "check-point-cg-r8120"
