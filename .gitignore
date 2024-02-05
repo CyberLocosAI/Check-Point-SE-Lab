@@ -15,7 +15,7 @@
 
 
 # Ignore these filenames
-tf_outputs.*
+tf_outputs.json
 
 # Python cache
 __pycache__/
