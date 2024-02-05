@@ -6,7 +6,7 @@ variable "usernames" {
 variable "resource_count" {
   description = "The number of each resource type to create"
   type        = number
-  default     = 20
+  default     = 1
 }
 
 variable "passwords" {
