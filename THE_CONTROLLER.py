@@ -215,15 +215,15 @@ if __name__ == '__main__':
     #############
     ### AZURE ###
     ##############################################################################################
+    # Telling Python to enter the azure directory
     os.chdir('./azure')
     
-    # ### Terraform
-    # ct.run_command(['terraform', 'apply', '-auto-approve'])
-    # time.sleep(90)
-    # print(f'\n\nPausing for 5 minutes to allow for initalization...\n\n')
-    # time.sleep(300)
-    # ct.run_command(['terraform', 'refresh'])
-    # ct.save_terraform_output()
+    ### Terraform
+    ct.run_command(['terraform', 'apply', '-auto-approve'])
+    print(f'\n\nPausing for 5 minutes to allow for initalization...\n\n')
+    time.sleep(300)
+    ct.run_command(['terraform', 'refresh']) # Doing a refresh to grab proper outputs.
+    ct.save_terraform_output()
 
     ### Ansible
     ct.azure_create_ansible_hosts_file(
@@ -232,9 +232,7 @@ if __name__ == '__main__':
                     ansible_user='instructor',  # Username to login.
                     tfvars_file='terraform.tfvars'  # Terraform tfvars
                                             )
-    # print(f'\n\nPausing for 5 minutes to allow for initalization...\n\n')
-    # time.sleep(300)
-    # ct.run_command(['ansible-playbook', '-i', 'hosts.ini', 'install_docker.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'core_ansible_install_docker.yaml'])
     
     # This is the last command for AZURE, it exits the directory.
     os.chdir(os.path.join(os.getcwd(), os.pardir))
