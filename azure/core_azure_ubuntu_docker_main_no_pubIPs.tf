@@ -8,13 +8,6 @@ variable "ubuntu_image" {
   }
 }
 
-resource "azurerm_public_ip" "ubuntu_docker_main_public_ip" {
-  count               = var.resource_count
-  name                = "ubuntu-docker-main-public-ip-${count.index}"
-  location            = azurerm_resource_group.FL-SE-AZURE.location
-  resource_group_name = azurerm_resource_group.FL-SE-AZURE.name
-  allocation_method   = "Dynamic"
-}
 
 resource "azurerm_network_interface" "ubuntu_docker_main_nic" {
   count               = var.resource_count
@@ -23,10 +16,10 @@ resource "azurerm_network_interface" "ubuntu_docker_main_nic" {
   resource_group_name = azurerm_resource_group.FL-SE-AZURE.name
 
   ip_configuration {
-    name                          = "external"
+    name                          = "internal" # Changed to "internal" to reflect non-public facing config
     subnet_id                     = azurerm_subnet.external[count.index].id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.ubuntu_docker_main_public_ip[count.index].id
+    // Removed the public_ip_address_id attribute
   }
 }
 
@@ -54,12 +47,4 @@ resource "azurerm_linux_virtual_machine" "ubuntu_docker_main" {
   }
 }
 
-output "ubuntu_docker_main_public_ips" {
-  value = {
-    for idx, ip in azurerm_public_ip.ubuntu_docker_main_public_ip :
-    "ubuntu-docker-main-public-ip-${idx + 1}" => ip.ip_address
-  }
-  description = "The public IP addresses of the Ubuntu Docker main virtual machines, with counts starting at 1."
-}
-
-
+// Removed the output for public IPs as it's no longer relevant

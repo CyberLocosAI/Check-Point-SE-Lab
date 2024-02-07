@@ -30,7 +30,7 @@ resource "azurerm_windows_virtual_machine" "student_vdi" {
   name                  = "student-vdi-${count.index}"
   resource_group_name   = azurerm_resource_group.FL-SE-AZURE.name
   location              = azurerm_resource_group.FL-SE-AZURE.location
-  size                  = "Standard_DS1_v2"
+  size                  = "Standard_DS2_v2"
   admin_username        = var.admin_username
   admin_password        = var.admin_password
   network_interface_ids = [azurerm_network_interface.student_nic[count.index].id]
@@ -62,7 +62,7 @@ resource "azurerm_network_security_group" "student_nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "3389"
-    source_address_prefix      = "Internet" # Adjust according to your security policy
+    source_address_prefixes    = ["99.35.11.235", "69.237.12.59", "73.85.178.251"] # Use source_address_prefixes for multiple IPs
     destination_address_prefix = "*"
   }
 }

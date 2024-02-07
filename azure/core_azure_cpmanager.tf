@@ -23,7 +23,7 @@ resource "azurerm_network_interface" "checkpoint_nic" {
     name                          = "external"
     subnet_id                     = azurerm_subnet.external[count.index].id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.checkpoint_public_ip[count.index].id
+    #public_ip_address_id          = azurerm_public_ip.checkpoint_public_ip[count.index].id
   }
 }
 
