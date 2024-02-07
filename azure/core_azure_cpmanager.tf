@@ -3,14 +3,15 @@ resource "azurerm_resource_group" "pub_IPs" {
   location = "East US"
 }
 
-resource "azurerm_public_ip" "checkpoint_public_ip" {
-  count               = length(azurerm_subnet.external.*.id)
-  name                = "checkpoint-public-ip-${count.index}"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  allocation_method   = "Static"
-  sku                 = "Basic"
-}
+#### Removing Public IPs from Cp mgmt now that we have a VDI per a student
+# resource "azurerm_public_ip" "checkpoint_public_ip" {
+#   count               = length(azurerm_subnet.external.*.id)
+#   name                = "checkpoint-public-ip-${count.index}"
+#   location            = var.location
+#   resource_group_name = var.resource_group_name
+#   allocation_method   = "Static"
+#   sku                 = "Basic"
+# }
 
 resource "azurerm_network_interface" "checkpoint_nic" {
   count               = length(azurerm_subnet.external.*.id)

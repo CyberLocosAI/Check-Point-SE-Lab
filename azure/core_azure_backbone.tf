@@ -1,12 +1,3 @@
-# terraform {
-#   required_providers {
-#     azurerm = {
-#       source  = "hashicorp/azurerm"
-#       version = "~> 2.46" # Specify the version you're targeting. Needed for AVD
-#     }
-#   }
-# }
-
 provider "azurerm" {
   features {}
 
