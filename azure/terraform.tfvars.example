@@ -2,12 +2,12 @@
 # usernames           = ["student1", "student2", "student3", "student4", "student5"]
 # passwords           = ["<PLACEHOLDER>", "<PLACEHOLDER>", "<PLACEHOLDER>", "<PLACEHOLDER>", "<PLACEHOLDER>"]
 
-admin_username      = "<PLACEHOLDER>" # Replace <PLACEHOLDER> with the VDI Username
-admin_password      = "<PLACEHOLDER>" # Replace <PLACEHOLDER> with the admin password for managers and VDIs; ensure to keep this secure
-client_id           = "<PLACEHOLDER>" # Replace <PLACEHOLDER> with your Azure Client ID
-client_secret       = "<PLACEHOLDER>" # Replace <PLACEHOLDER> with your Azure Client Secret; ensure to keep this secure
-tenant_id           = "<PLACEHOLDER>" # Replace <PLACEHOLDER> with your Azure Tenant ID
-subscription_id     = "<PLACEHOLDER>" # Replace <PLACEHOLDER> with your Azure Subscription ID
+admin_username      = "admin"
+admin_password      = "Logan2009!!!"
+client_id         = "018ab96b-8c4a-480c-96a3-9c78f7205809"
+client_secret     = "u6a8Q~SMZyDGXnAQVGbXuD2Igmpmg0EGe2-X2bus"
+tenant_id         = "2e1937a7-c5b3-4c7e-91fb-2d655a96e7d0"
+subscription_id   = "d7594306-80ff-43af-8ec0-24c42434c159"
 location            = "EastUS"
 resource_group_name = "pub_IPs"
 vm_size             = "Standard_B2ms" # VM size for CP Managers
