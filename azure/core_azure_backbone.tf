@@ -1,3 +1,12 @@
+# terraform {
+#   required_providers {
+#     azurerm = {
+#       source  = "hashicorp/azurerm"
+#       version = "~> 2.46" # Specify the version you're targeting. Needed for AVD
+#     }
+#   }
+# }
+
 provider "azurerm" {
   features {}
 
@@ -49,16 +58,16 @@ resource "azurerm_subnet" "dmz" {
 }
 
 output "vpc_subnet_details" {
-  value = { 
-    for vnet in azurerm_virtual_network.FL-SE-AZURE : 
-      vnet.name => {
-        "address_space" = vnet.address_space
-        "subnets" = {
-          "internal" = [for s in azurerm_subnet.internal : s.address_prefixes if s.virtual_network_name == vnet.name],
-          "external" = [for s in azurerm_subnet.external : s.address_prefixes if s.virtual_network_name == vnet.name],
-          "dmz" = [for s in azurerm_subnet.dmz : s.address_prefixes if s.virtual_network_name == vnet.name]
-        }
-      } 
+  value = {
+    for vnet in azurerm_virtual_network.FL-SE-AZURE :
+    vnet.name => {
+      "address_space" = vnet.address_space
+      "subnets" = {
+        "internal" = [for s in azurerm_subnet.internal : s.address_prefixes if s.virtual_network_name == vnet.name],
+        "external" = [for s in azurerm_subnet.external : s.address_prefixes if s.virtual_network_name == vnet.name],
+        "dmz"      = [for s in azurerm_subnet.dmz : s.address_prefixes if s.virtual_network_name == vnet.name]
+      }
+    }
   }
   description = "Each VPC with its name and every subnet assigned to each VPC."
 }

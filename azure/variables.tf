@@ -80,4 +80,24 @@ variable "ubuntu_monster_vm_size" {
   default     = "Standard_D2s_v3" # You can set a default value or leave it without to require explicit specification
 }
 
-# The vm_os_sku variable is already correctly declared in your existing variables.tf
+variable "vm_count" {
+  description = "Number of VMs to create for AVD session hosts"
+  type        = number
+  default     = 1
+}
+
+variable "admin_username" {
+  description = "Admin username for the VM"
+  type        = string
+}
+
+variable "student_count" {
+  description = "The number of student VMs to create"
+  type        = number
+  default     = 1
+}
+
+variable "student_subnet_id" {
+  description = "The ID of the subnet where student VMs will be connected"
+  type        = string
+}
