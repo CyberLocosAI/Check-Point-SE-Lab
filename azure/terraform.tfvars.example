@@ -1,0 +1,22 @@
+# Usernames and passwords are commented out as they are not yet needed
+# usernames           = ["student1", "student2", "student3", "student4", "student5"]
+# passwords           = ["<PLACEHOLDER>", "<PLACEHOLDER>", "<PLACEHOLDER>", "<PLACEHOLDER>", "<PLACEHOLDER>"]
+
+admin_username      = "<PLACEHOLDER>" # Replace <PLACEHOLDER> with the VDI Username
+admin_password      = "<PLACEHOLDER>" # Replace <PLACEHOLDER> with the admin password for managers and VDIs; ensure to keep this secure
+client_id           = "<PLACEHOLDER>" # Replace <PLACEHOLDER> with your Azure Client ID
+client_secret       = "<PLACEHOLDER>" # Replace <PLACEHOLDER> with your Azure Client Secret; ensure to keep this secure
+tenant_id           = "<PLACEHOLDER>" # Replace <PLACEHOLDER> with your Azure Tenant ID
+subscription_id     = "<PLACEHOLDER>" # Replace <PLACEHOLDER> with your Azure Subscription ID
+location            = "EastUS"
+resource_group_name = "pub_IPs"
+vm_size             = "Standard_B2ms" # VM size for CP Managers
+vm_os_offer         = "check-point-cg-r8120"
+vm_os_sku           = "mgmt-byol"
+disk_size           = 100
+student_subnet_id   = "/subscriptions/your_subscription_id/resourceGroups/your_resource_group_name/providers/Microsoft.Network/virtualNetworks/your_vnet_name/subnets/your_subnet_name" # Replace <PLACEHOLDER> with the actual subnet ID
+
+
+
+# Optionally, if you have a bootstrap script
+# bootstrap_script = "your_encoded_bootstrap_script"
