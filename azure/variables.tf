@@ -1,18 +1,9 @@
-variable "usernames" {
-  type        = list(string)
-  description = "List of usernames for the virtual machines"
-}
-
 variable "resource_count" {
   description = "The number of each resource type to create"
   type        = number
   default     = 1
 }
 
-variable "passwords" {
-  type        = list(string)
-  description = "List of passwords for the virtual machines"
-}
 variable "subscription_id" {
   description = "The Azure Subscription ID"
   type        = string

@@ -1,3 +1,4 @@
+# Check Point SE Lab gitignore v3
 # Ignore these file extensions
 *.xls
 *.xlsm
@@ -37,3 +38,4 @@ archive/
 
 # Negations - exceptions to the gitignore
 !terraform.exe
+!deployment_checklist.txt

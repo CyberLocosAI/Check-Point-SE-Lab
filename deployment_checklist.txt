@@ -1,0 +1,24 @@
+### Prep your Linux SubSystem ###
+-Update FIRST
+-install terraform
+-install ansible
+-install sshpass
+
+### Azure ###
+
+1. Create an application for terraform in Entra.
+2. Assign the service principal of your application to the contributor role.
+
+2. Update the tfvars file with your account info and application info. 
+Please note the client secret is the VALUE of the secret 
+not the id of the secret.
+
+3. Accept license agreements using azure cli with these commands
+-az login
+-az vm image terms accept --urn checkpoint:check-point-cg-r8120:mgmt-byol:latest
+-az vm image terms accept --urn checkpoint:check-point-cg-r8120:sg-byol:latest
+
+
+# Azure Ansible
+-need to install sshpass on the system running ansible when using username and password on the linux system
+-make sure the ansible cfg file is present to disable ssh host checking
