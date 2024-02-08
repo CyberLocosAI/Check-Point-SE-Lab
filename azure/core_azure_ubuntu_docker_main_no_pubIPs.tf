@@ -8,7 +8,6 @@ variable "ubuntu_image" {
   }
 }
 
-
 resource "azurerm_network_interface" "ubuntu_docker_main_nic" {
   count               = var.resource_count
   name                = "ubuntu-docker-main-nic-${count.index}"
@@ -46,5 +45,3 @@ resource "azurerm_linux_virtual_machine" "ubuntu_docker_main" {
     version   = var.ubuntu_image.version
   }
 }
-
-// Removed the output for public IPs as it's no longer relevant

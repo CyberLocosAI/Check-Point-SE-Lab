@@ -61,12 +61,6 @@ variable "admin_password" {
   type        = string
 }
 
-variable "pub_ips_resource_group_name" {
-  description = "The name of the resource group for public IPs"
-  type        = string
-  default     = "pub_IPs" # You can set a default value or leave it without a default
-}
-
 variable "ubuntu_monster_vm_size" {
   description = "The size of the Ubuntu Monster virtual machine"
   type        = string
