@@ -1,5 +1,5 @@
 ---
-- name: Install Docker on Ubuntu servers
+- name: Prepare Ubuntu machines for SSH and Install Docker
   hosts: ubuntu_docker_main_machines
   become: yes  # Use sudo for all operations
   gather_facts: yes  # Ensure facts are gathered to use ansible_facts['distribution'].lower()
@@ -7,6 +7,27 @@
     ansible_become_pass: Cpm@st3r!
 
   tasks:
+    - name: Ensure SSH is installed
+      ansible.builtin.apt:
+        name: openssh-server
+        state: present
+
+    - name: Ensure SSH service is enabled and running
+      ansible.builtin.service:
+        name: ssh
+        state: started
+        enabled: yes
+
+    - name: Allow SSH through the firewall
+      ansible.builtin.apt:
+        name: ufw
+        state: present
+      register: ufw_installed
+
+    - name: Enable SSH connections on the firewall
+      ansible.builtin.command: ufw allow ssh
+      when: ufw_installed.changed
+
     - name: Update apt package index
       ansible.builtin.apt:
         update_cache: yes

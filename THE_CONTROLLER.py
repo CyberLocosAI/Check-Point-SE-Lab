@@ -119,9 +119,9 @@ class CONTROLLER:
             data = json.load(file)
         # Extract Ubuntu Docker main public IPs
         ubuntu_ips = []
-        if "ubuntu_docker_main_public_ips" in data and "value" in data["ubuntu_docker_main_public_ips"]:
-            for key, ip in data["ubuntu_docker_main_public_ips"]["value"].items():
-                if "ubuntu-docker-main-public-ip" in key:
+        if "ubuntu_docker_main_ips" in data and "value" in data["ubuntu_docker_main_ips"]:
+            for key, ip in data["ubuntu_docker_main_ips"]["value"].items():
+                if "ubuntu-docker-main" in key:
                     ubuntu_ips.append(ip)
         # Read the tfvars file to get the admin_password
         admin_password = None
@@ -218,21 +218,21 @@ if __name__ == '__main__':
     # Telling Python to enter the azure directory
     os.chdir('./azure')
     
-    ### Terraform
-    ct.run_command(['terraform', 'apply', '-auto-approve'])
-    print(f'\n\nPausing for 5 minutes to allow for initalization...\n\n')
-    time.sleep(300)
+    # ### Terraform
+    # ct.run_command(['terraform', 'apply', '-auto-approve'])
+    # print(f'\n\nPausing for 5 minutes to allow for initalization...\n\n')
+    # time.sleep(300)
     ct.run_command(['terraform', 'refresh']) # Doing a refresh to grab proper outputs.
     ct.save_terraform_output()
 
-    ### Ansible
-    # ct.azure_create_ansible_hosts_file(
-    #                 json_output_file='tf_outputs.json',  # Path to the Terraform output JSON file
-    #                 hosts_file='core_ubuntu_docker_machines.ini',  # Output Ansible hosts file
-    #                 ansible_user='instructor',  # Username to login.
-    #                 tfvars_file='terraform.tfvars'  # Terraform tfvars
-    #                                         )
-    # ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'core_ansible_install_docker.yaml'])
+    ## Ansible
+    ct.azure_create_ansible_hosts_file(
+                    json_output_file='tf_outputs.json',  # Path to the Terraform output JSON file
+                    hosts_file='core_ubuntu_docker_machines.ini',  # Output Ansible hosts file
+                    ansible_user='instructor',  # Username to login.
+                    tfvars_file='terraform.tfvars'  # Terraform tfvars
+                                            )
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'core_ansible_install_docker.yaml'])
     
     # This is the last command for AZURE, it exits the directory.
     os.chdir(os.path.join(os.getcwd(), os.pardir))
