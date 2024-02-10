@@ -3,26 +3,9 @@ variable "ubuntu_image" {
   default = {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts-gen2"
+    sku       = "22_04-lts-gen2" # Ubuntu 22.04 LTS
     version   = "latest"
   }
-}
-
-variable "resource_count" {
-  type = number
-}
-
-variable "admin_password" {
-  type = string
-}
-
-variable "ubuntu_monster_vm_size" {
-  type = string
-}
-
-resource "azurerm_resource_group" "FL-SE-AZURE" {
-  # Assuming the resource group is defined somewhere else in your configuration
-  # This placeholder is here for context
 }
 
 resource "azurerm_public_ip" "ubuntu_docker_main_public_ip" {
@@ -33,15 +16,10 @@ resource "azurerm_public_ip" "ubuntu_docker_main_public_ip" {
   allocation_method   = "Dynamic"
 }
 
-resource "azurerm_subnet" "external" {
-  # Assuming the subnet is defined somewhere else in your configuration
-  # This placeholder is here for context
-}
-
 resource "azurerm_network_interface" "ubuntu_docker_main_nic" {
-  count = var.resource_count
-  name  = "ubuntu-docker-main-nic-${count.index}"
-  location = azurerm_resource_group.FL-SE-AZURE.location
+  count               = var.resource_count
+  name                = "ubuntu-docker-main-nic-${count.index}"
+  location            = azurerm_resource_group.FL-SE-AZURE.location
   resource_group_name = azurerm_resource_group.FL-SE-AZURE.name
 
   ip_configuration {
@@ -53,19 +31,19 @@ resource "azurerm_network_interface" "ubuntu_docker_main_nic" {
 }
 
 resource "azurerm_linux_virtual_machine" "ubuntu_docker_main" {
-  count                        = var.resource_count
-  name                         = "ubuntu-docker-main-${count.index + 1}"
-  resource_group_name          = azurerm_resource_group.FL-SE-AZURE.name
-  location                     = azurerm_resource_group.FL-SE-AZURE.location
-  size                         = var.ubuntu_monster_vm_size
-  admin_username               = "instructor"
-  admin_password               = var.admin_password
+  count                           = var.resource_count
+  name                            = "ubuntu-docker-main-${count.index + 1}"
+  resource_group_name             = azurerm_resource_group.FL-SE-AZURE.name
+  location                        = azurerm_resource_group.FL-SE-AZURE.location
+  size                            = var.ubuntu_monster_vm_size
+  admin_username                  = "instructor"
+  admin_password                  = var.admin_password
   disable_password_authentication = false
-  network_interface_ids        = [azurerm_network_interface.ubuntu_docker_main_nic[count.index].id]
+  network_interface_ids           = [azurerm_network_interface.ubuntu_docker_main_nic[count.index].id]
 
   os_disk {
-    caching                   = "ReadWrite"
-    storage_account_type      = "Standard_LRS"
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
   }
 
   source_image_reference {
@@ -74,19 +52,14 @@ resource "azurerm_linux_virtual_machine" "ubuntu_docker_main" {
     sku       = var.ubuntu_image.sku
     version   = var.ubuntu_image.version
   }
-
-  custom_data = <<-EOT
-    #!/bin/bash
-    ufw disable
-    systemctl enable ssh
-    systemctl start ssh
-  EOT
 }
 
 output "ubuntu_docker_main_public_ips" {
   value = {
-    for idx, ip in azurerm_public_ip.ubuntu_docker_main_public_ip : 
-      "ubuntu-docker-main-public-ip-${idx + 1}" => ip.ip_address
+    for idx, ip in azurerm_public_ip.ubuntu_docker_main_public_ip :
+    "ubuntu-docker-main-public-ip-${idx + 1}" => ip.ip_address
   }
   description = "The public IP addresses of the Ubuntu Docker main virtual machines, with counts starting at 1."
 }
+
+

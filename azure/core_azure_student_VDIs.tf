@@ -1,5 +1,3 @@
-# Assuming variables admin_username and admin_password are defined in variables.tf
-
 # Public IP Addresses for VMs
 resource "azurerm_public_ip" "student_vdi_ip" {
   count                = var.resource_count
