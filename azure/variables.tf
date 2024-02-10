@@ -1,9 +1,18 @@
+variable "usernames" {
+  type        = list(string)
+  description = "List of usernames for the virtual machines"
+}
+
 variable "resource_count" {
   description = "The number of each resource type to create"
   type        = number
   default     = 1
 }
 
+variable "passwords" {
+  type        = list(string)
+  description = "List of passwords for the virtual machines"
+}
 variable "subscription_id" {
   description = "The Azure Subscription ID"
   type        = string
@@ -71,24 +80,9 @@ variable "ubuntu_monster_vm_size" {
   default     = "Standard_D2s_v3" # You can set a default value or leave it without to require explicit specification
 }
 
-variable "vm_count" {
-  description = "Number of VMs to create for AVD session hosts"
-  type        = number
-  default     = 1
-}
-
-variable "admin_username" {
-  description = "Admin username for the VM"
+variable "admin_password" {
+  description = "The administrator password for CPManagers"
   type        = string
 }
 
-variable "student_count" {
-  description = "The number of student VMs to create"
-  type        = number
-  default     = 1
-}
-
-variable "student_subnet_id" {
-  description = "The ID of the subnet where student VMs will be connected"
-  type        = string
-}
+# The vm_os_sku variable is already correctly declared in your existing variables.tf

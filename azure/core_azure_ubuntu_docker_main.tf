@@ -3,23 +3,45 @@ variable "ubuntu_image" {
   default = {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts-gen2" # Ubuntu 22.04 LTS
+    sku       = "22_04-lts-gen2"
     version   = "latest"
   }
 }
 
+variable "resource_count" {
+  type = number
+}
+
+variable "admin_password" {
+  type = string
+}
+
+variable "ubuntu_monster_vm_size" {
+  type = string
+}
+
+resource "azurerm_resource_group" "FL-SE-AZURE" {
+  # Assuming the resource group is defined somewhere else in your configuration
+  # This placeholder is here for context
+}
+
 resource "azurerm_public_ip" "ubuntu_docker_main_public_ip" {
-  count                = var.resource_count
-  name                 = "ubuntu-docker-main-public-ip-${count.index}"
-  location             = azurerm_resource_group.FL-SE-AZURE.location
-  resource_group_name  = azurerm_resource_group.FL-SE-AZURE.name
-  allocation_method    = "Dynamic"
+  count               = var.resource_count
+  name                = "ubuntu-docker-main-public-ip-${count.index}"
+  location            = azurerm_resource_group.FL-SE-AZURE.location
+  resource_group_name = azurerm_resource_group.FL-SE-AZURE.name
+  allocation_method   = "Dynamic"
+}
+
+resource "azurerm_subnet" "external" {
+  # Assuming the subnet is defined somewhere else in your configuration
+  # This placeholder is here for context
 }
 
 resource "azurerm_network_interface" "ubuntu_docker_main_nic" {
   count = var.resource_count
-  name                = "ubuntu-docker-main-nic-${count.index}"
-  location            = azurerm_resource_group.FL-SE-AZURE.location
+  name  = "ubuntu-docker-main-nic-${count.index}"
+  location = azurerm_resource_group.FL-SE-AZURE.location
   resource_group_name = azurerm_resource_group.FL-SE-AZURE.name
 
   ip_configuration {
@@ -47,11 +69,18 @@ resource "azurerm_linux_virtual_machine" "ubuntu_docker_main" {
   }
 
   source_image_reference {
-    publisher                 = var.ubuntu_image.publisher
-    offer                     = var.ubuntu_image.offer
-    sku                       = var.ubuntu_image.sku
-    version                   = var.ubuntu_image.version
+    publisher = var.ubuntu_image.publisher
+    offer     = var.ubuntu_image.offer
+    sku       = var.ubuntu_image.sku
+    version   = var.ubuntu_image.version
   }
+
+  custom_data = <<-EOT
+    #!/bin/bash
+    ufw disable
+    systemctl enable ssh
+    systemctl start ssh
+  EOT
 }
 
 output "ubuntu_docker_main_public_ips" {
@@ -61,5 +90,3 @@ output "ubuntu_docker_main_public_ips" {
   }
   description = "The public IP addresses of the Ubuntu Docker main virtual machines, with counts starting at 1."
 }
-
-

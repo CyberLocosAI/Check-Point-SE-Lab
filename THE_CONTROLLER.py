@@ -219,9 +219,9 @@ if __name__ == '__main__':
     os.chdir('./azure')
     
     # ### Terraform
-    # ct.run_command(['terraform', 'apply', '-auto-approve'])
-    # print(f'\n\nPausing for 5 minutes to allow for initalization...\n\n')
-    # time.sleep(300)
+    ct.run_command(['terraform', 'apply', '-auto-approve'])
+    print(f'\n\nPausing for 5 minutes to allow for initalization...\n\n')
+    time.sleep(300)
     ct.run_command(['terraform', 'refresh']) # Doing a refresh to grab proper outputs.
     ct.save_terraform_output()
 
