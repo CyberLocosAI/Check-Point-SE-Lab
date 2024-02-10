@@ -1,3 +1,13 @@
+# Public IP Addresses for Check Point VMs
+resource "azurerm_public_ip" "checkpoint_public_ip" {
+  count                = length(azurerm_subnet.external.*.id)
+  name                 = "checkpoint-public-ip-${count.index}"
+  resource_group_name  = var.resource_group_name
+  location             = var.location
+  allocation_method    = "Dynamic"
+}
+
+# Network Interfaces for Check Point VMs
 resource "azurerm_network_interface" "checkpoint_nic" {
   count               = length(azurerm_subnet.external.*.id)
   name                = "checkpoint-nic-${count.index}"
@@ -8,9 +18,11 @@ resource "azurerm_network_interface" "checkpoint_nic" {
     name                          = "external"
     subnet_id                     = azurerm_subnet.external[count.index].id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.checkpoint_public_ip[count.index].id
   }
 }
 
+# Check Point Linux Virtual Machines
 resource "azurerm_linux_virtual_machine" "checkpoint_vm" {
   count                 = length(azurerm_subnet.external.*.id)
   name                  = "checkpoint-vm-${count.index}"
@@ -23,7 +35,7 @@ resource "azurerm_linux_virtual_machine" "checkpoint_vm" {
   admin_password                  = var.admin_password
   disable_password_authentication = false
 
-  # Plan information required for VMs created from Marketplace images
+  # Plan information for VMs created from Marketplace images
   plan {
     name      = "mgmt-byol"
     publisher = "checkpoint"
@@ -42,7 +54,4 @@ resource "azurerm_linux_virtual_machine" "checkpoint_vm" {
     storage_account_type = "Standard_LRS"
     disk_size_gb         = var.disk_size
   }
-
-  # Add any custom script or configuration
-  #custom_data = base64encode(var.bootstrap_script)
 }
