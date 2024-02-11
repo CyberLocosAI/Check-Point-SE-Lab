@@ -1,4 +1,5 @@
 # Check Point SE Lab gitignore v3
+# SECURITY RISK IF EDITED!!!
 # Ignore these file extensions
 *.xls
 *.xlsm
