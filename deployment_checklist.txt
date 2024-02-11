@@ -26,3 +26,4 @@ not the id of the secret.
 # Azure Ansible
 -need to install sshpass on the system running ansible when using username and password on the linux system
 -make sure the ansible cfg file is present to disable ssh host checking
+-we are now using ansible vault, the secret file, vault password file, and ansible.cfg have to be present.
