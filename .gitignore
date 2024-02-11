@@ -17,6 +17,7 @@
 
 # Ignore these filenames
 tf_outputs.json
+cp-se-lab-ansible-secrets.yaml
 
 # Python cache
 __pycache__/

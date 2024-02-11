@@ -3,8 +3,8 @@
   hosts: ubuntu_docker_main_machines
   become: yes  # Use sudo for all operations
   gather_facts: yes  # Ensure facts are gathered to use ansible_facts['distribution'].lower()
-  vars:
-    ansible_become_pass: Cpm@st3r!
+  vars_files:
+    - cp-se-lab-ansible-secrets.yaml
 
   tasks:
     - name: Ensure SSH is installed
@@ -47,7 +47,7 @@
         state: present
 
     - name: Add the Docker repository
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
         state: present
 
@@ -65,3 +65,8 @@
       ansible.builtin.pip:
         name: docker
         state: present
+
+    - name: Login to Docker Hub
+      ansible.builtin.docker_login:
+        username: "{{ docker_hub_username }}"
+        password: "{{ docker_hub_password }}"
