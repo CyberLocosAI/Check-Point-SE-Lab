@@ -232,7 +232,8 @@ if __name__ == '__main__':
                     ansible_user='instructor',  # Username to login.
                     tfvars_file='terraform.tfvars'  # Terraform tfvars
                                             )
-    # ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'core_ansible_install_docker.yaml'])
-    
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'core_ansible_install_docker.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_apache_vuln.yaml'])
+
     # This is the last command for AZURE, it exits the directory.
     os.chdir(os.path.join(os.getcwd(), os.pardir))
