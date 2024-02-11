@@ -119,9 +119,9 @@ class CONTROLLER:
             data = json.load(file)
         # Extract Ubuntu Docker main public IPs
         ubuntu_ips = []
-        if "ubuntu_docker_main_ips" in data and "value" in data["ubuntu_docker_main_ips"]:
-            for key, ip in data["ubuntu_docker_main_ips"]["value"].items():
-                if "ubuntu-docker-main" in key:
+        if "ubuntu_docker_main_public_ips" in data and "value" in data["ubuntu_docker_main_public_ips"]:
+            for key, ip in data["ubuntu_docker_main_public_ips"]["value"].items():
+                if "ubuntu-docker-main-public" in key:
                     ubuntu_ips.append(ip)
         # Read the tfvars file to get the admin_password
         admin_password = None

@@ -1,0 +1,19 @@
+---
+- name: Deploy Docker container on Ubuntu Docker main machines
+  hosts: ubuntu_docker_main_machines
+  become: yes  # Use sudo for all operations
+  tasks:
+    - name: Pull Docker image
+      ansible.builtin.docker_image:
+        name: cyberlocosai/check-point-se-lab:cloud-apache-vuln
+        source: pull
+
+    - name: Run Docker container
+      ansible.builtin.docker_container:
+        name: "check-point-se-lab-container"
+        image: "cyberlocosai/check-point-se-lab:cloud-apache-vuln"
+        state: started
+        restart_policy: always
+        ports:
+          - "49443:49443"
+          - "4922:4922"

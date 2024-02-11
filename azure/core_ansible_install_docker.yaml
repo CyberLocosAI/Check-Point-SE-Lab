@@ -55,3 +55,13 @@
       ansible.builtin.apt:
         name: docker-ce
         state: latest
+
+    - name: Install Python3-pip (pip3)
+      ansible.builtin.apt:
+        name: python3-pip
+        state: present
+
+    - name: Install Docker SDK for Python
+      ansible.builtin.pip:
+        name: docker
+        state: present

@@ -61,5 +61,3 @@ output "ubuntu_docker_main_public_ips" {
   }
   description = "The public IP addresses of the Ubuntu Docker main virtual machines, with counts starting at 1."
 }
-
-
