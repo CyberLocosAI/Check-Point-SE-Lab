@@ -15,8 +15,7 @@
         state: started
         restart_policy: always
         ports:
-          - "49443:49443"
-          - "4922:4922"
+          - "1337:1337"
         networks_advanced:
           - name: cp_se_dockernet
-            ipv4_address: 10.10.10.69
+            ipv4_address: 10.10.10.5

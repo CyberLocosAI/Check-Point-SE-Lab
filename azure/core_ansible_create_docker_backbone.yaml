@@ -1,5 +1,5 @@
 ---
-- name: Prepare Ubuntu machines for SSH and Install Docker
+- name: Build Docker backbone
   hosts: ubuntu_docker_main_machines
   become: yes  # Use sudo for all operations
   gather_facts: yes  # Ensure facts are gathered to use ansible_facts['distribution'].lower()
@@ -7,12 +7,12 @@
     - cp-se-lab-ansible-secrets.yaml
 
   tasks:
-    - name: Ensure SSH is installed
+    - name: Install SSH
       ansible.builtin.apt:
         name: openssh-server
         state: present
 
-    - name: Ensure SSH service is enabled and running
+    - name: Start SSH
       ansible.builtin.service:
         name: ssh
         state: started
@@ -41,7 +41,7 @@
           - software-properties-common
         state: present
 
-    - name: Add Docker’s official GPG key
+    - name: Add Docker official GPG key
       ansible.builtin.apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
@@ -70,3 +70,12 @@
       ansible.builtin.docker_login:
         username: "{{ docker_hub_username }}"
         password: "{{ docker_hub_password }}"
+
+    - name: Create Our Internal Dockernet
+      community.docker.docker_network:
+        name: cp_se_dockernet
+        driver: bridge
+        ipam_config:
+          - subnet: "10.10.10.0/24"
+            gateway: "10.10.10.1"
+        state: present
