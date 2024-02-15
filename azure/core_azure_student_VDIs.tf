@@ -1,10 +1,10 @@
 # Public IP Addresses for VMs
 resource "azurerm_public_ip" "student_vdi_ip" {
-  count                = var.resource_count
-  name                 = "student-vdi-ip-${count.index}"
-  resource_group_name  = azurerm_resource_group.FL-SE-AZURE.name
-  location             = azurerm_resource_group.FL-SE-AZURE.location
-  allocation_method    = "Dynamic"
+  count               = var.resource_count
+  name                = "student-vdi-ip-${count.index}"
+  resource_group_name = azurerm_resource_group.FL-SE-AZURE.name
+  location            = azurerm_resource_group.FL-SE-AZURE.location
+  allocation_method   = "Dynamic"
 }
 
 # Network Interfaces for VMs
@@ -46,7 +46,7 @@ resource "azurerm_windows_virtual_machine" "student_vdi" {
   }
 }
 
-# Network Security Group and Rule for RDP Access (if not defined in main.tf)
+# Network Security Group and Rule for RDP Access
 resource "azurerm_network_security_group" "student_nsg" {
   name                = "student-vdi-nsg"
   location            = azurerm_resource_group.FL-SE-AZURE.location
@@ -59,15 +59,32 @@ resource "azurerm_network_security_group" "student_nsg" {
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = "3389"
-    source_address_prefixes    = ["99.35.11.235", "69.237.12.59", "73.85.178.251"] # Use source_address_prefixes for multiple IPs
+    destination_port_range     = "*"
+    source_address_prefixes    = ["99.35.11.235", "69.237.12.59", "73.85.178.251"]
     destination_address_prefix = "*"
   }
 }
 
 # Associate NSGs with Network Interfaces (if required)
 resource "azurerm_network_interface_security_group_association" "student_nic_nsg_assoc" {
-  count                      = var.resource_count
-  network_interface_id       = azurerm_network_interface.student_nic[count.index].id
-  network_security_group_id  = azurerm_network_security_group.student_nsg.id
+  count                     = var.resource_count
+  network_interface_id      = azurerm_network_interface.student_nic[count.index].id
+  network_security_group_id = azurerm_network_security_group.student_nsg.id
+}
+
+# Adding Custom Script Extension to run SetupVDI.ps1 script on each VM
+resource "azurerm_virtual_machine_extension" "student_vdi_script_extension" {
+  count                = var.resource_count
+  name                 = "SetupVDIScriptExtension-${count.index}"
+  virtual_machine_id   = azurerm_windows_virtual_machine.student_vdi[count.index].id
+  publisher            = "Microsoft.Compute"
+  type                 = "CustomScriptExtension"
+  type_handler_version = "1.10"
+
+  settings = <<SETTINGS
+{
+  "fileUris": ["https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/SetupVDI.ps1"],
+  "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File SetupVDI.ps1"
+}
+SETTINGS
 }

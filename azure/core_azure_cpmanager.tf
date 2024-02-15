@@ -1,10 +1,10 @@
 # Public IP Addresses for Check Point VMs
 resource "azurerm_public_ip" "checkpoint_public_ip" {
-  count                = length(azurerm_subnet.external.*.id)
-  name                 = "checkpoint-public-ip-${count.index}"
-  resource_group_name  = var.resource_group_name
-  location             = var.location
-  allocation_method    = "Dynamic"
+  count               = length(azurerm_subnet.external.*.id)
+  name                = "checkpoint-public-ip-${count.index}"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  allocation_method   = "Dynamic"
 }
 
 # Network Interfaces for Check Point VMs
