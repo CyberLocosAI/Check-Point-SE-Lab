@@ -3,8 +3,11 @@
 ## **The fully IaaC Check Point SE Lab**
 
 **This kit contains a fully modular, scalable, and customizable IaaC Cloud lab.**
+
 **developed by**
+
 **Raffi Ali, Hector Mora, Frank Rivas, and Travis Lockman**
+
 **tHe fLoRiDa tEaM**
 
 ## **Content**
