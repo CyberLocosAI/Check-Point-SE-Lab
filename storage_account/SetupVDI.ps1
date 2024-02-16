@@ -11,12 +11,14 @@ $SmartConsoleExeUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-set
 $SmartConsoleExePath = Join-Path -Path $CPFolderPath -ChildPath "SmartConsole.exe"
 Invoke-WebRequest -Uri $SmartConsoleExeUrl -OutFile $SmartConsoleExePath
 
-# Download MobaXterm_Portable_v23.6.zip from blob storage and place it in the CP folder
-$MobaXtermUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/MobaXterm_Portable_v23.6.zip"
-$MobaXtermPath = Join-Path -Path $CPFolderPath -ChildPath "MobaXterm_Portable_v23.6.zip"
+# Download MobaXterm files from blob storage and place it in the CP folder
+$MobaXtermUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/MobaXterm_Personal_23.6.exe"
+$MobaXtermPath = Join-Path -Path $CPFolderPath -ChildPath "MobaXterm.exe"
 Invoke-WebRequest -Uri $MobaXtermUrl -OutFile $MobaXtermPath
-Expand-Archive -LiteralPath $MobaXtermPath -DestinationPath $CPFolderPath
 
+$MobaXtermUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/CygUtils64.plugin"
+$MobaXtermPath = Join-Path -Path $CPFolderPath -ChildPath "CygUtils64.plugin"
+Invoke-WebRequest -Uri $MobaXtermUrl -OutFile $MobaXtermPath
 # Create a URL shortcut in the CP folder pointing to www.checkpoint.com
 $ShortcutPath = Join-Path -Path $CPFolderPath -ChildPath "CheckPoint.url"
 $URL = "http://www.checkpoint.com"
@@ -36,3 +38,31 @@ $TaskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopI
 
 # Register the task to run under the SYSTEM account, ensuring it's applicable to any user logging on
 Register-ScheduledTask -TaskName $TaskName -Action $TaskAction -Trigger $TaskTrigger -Principal (New-ScheduledTaskPrincipal -UserId $TaskUser -LogonType ServiceAccount -RunLevel Highest) -Settings $TaskSettings
+
+#### START WALLPAPER SCRIPT ####
+
+# Download custom wallpaper image and place it in the CP folder
+$WallpaperUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/LosLocos.jpg"
+$WallpaperPath = Join-Path -Path $CPFolderPath -ChildPath "LosLocos.jpg"
+Invoke-WebRequest -Uri $WallpaperUrl -OutFile $WallpaperPath
+
+
+# Set registry values for centered wallpaper
+Set-ItemProperty -Path 'HKCU:\Control Panel\Desktop\' -Name WallpaperStyle -Value 10 # 0 is for centered
+Set-ItemProperty -Path 'HKCU:\Control Panel\Desktop\' -Name TileWallpaper -Value 0 # 0 means no tiling
+
+# Function to refresh the desktop wallpaper
+Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+
+public class Wallpaper {
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    public static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+}
+"@
+
+# Apply the wallpaper
+[Wallpaper]::SystemParametersInfo(20, 0, $WallpaperPath, 3)
+
+#### END WALLPAPER SCRIPT ####
