@@ -41,3 +41,4 @@ archive/
 # Negations - exceptions to the gitignore
 !terraform.exe
 !deployment_checklist.txt
+!lab_guide*.txt
