@@ -12,6 +12,7 @@ The lab is created with Python, Terraform, Ansible, Docker.
 It is built to execute from any linux platform, into AWS and/or Azure.
 
 *--Python--*
+
 *THE_CONTROLLER.py* - Oversees the running of all code, executes and processes output across the platform.
 
 *--Terraform--*
