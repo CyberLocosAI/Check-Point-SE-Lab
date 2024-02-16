@@ -220,8 +220,8 @@ if __name__ == '__main__':
     
     ## Terraform
     ct.run_command(['terraform', 'apply', '-auto-approve'])
-    print(f'\n\nPausing for 5 minutes to allow for initalization...\n\n')
-    time.sleep(300)
+    print(f'\n\nPausing for 3 minutes to allow for initalization...\n\n')
+    time.sleep(180)
     ct.run_command(['terraform', 'refresh']) # Doing a refresh to grab proper outputs.
     ct.save_terraform_output()
 
@@ -232,8 +232,14 @@ if __name__ == '__main__':
                     ansible_user='instructor',  # Username to login.
                     tfvars_file='terraform.tfvars'  # Terraform tfvars
                                             )
-    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'core_ansible_install_docker.yaml'])
+    
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'core_ansible_create_docker_backbone.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_ubuntu_attack.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_apache_vuln.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_log4j_webgoat.yaml'])
+    
+
+
 
     # This is the last command for AZURE, it exits the directory.
     os.chdir(os.path.join(os.getcwd(), os.pardir))

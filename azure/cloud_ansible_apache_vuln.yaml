@@ -1,5 +1,5 @@
 ---
-- name: Deploy Docker container on Ubuntu Docker main machines
+- name: DEPLOYING VUNERABLE APACHE MACHINE
   hosts: ubuntu_docker_main_machines
   become: yes  # Use sudo for all operations
   tasks:
@@ -14,9 +14,6 @@
         image: "cyberlocosai/check-point-se-lab:cloud-apache-vuln"
         state: started
         restart_policy: always
-        ports:
-          - "49443:49443"
-          - "4922:4922"
-        networks_advanced:
+        networks:
           - name: cp_se_dockernet
             ipv4_address: 10.10.10.69

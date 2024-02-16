@@ -1,30 +1,24 @@
 ---
-- name: Deploy Docker container on Ubuntu Docker main machines
+- name: DEPLOYING WEBGOAT SERVER
   hosts: ubuntu_docker_main_machines
-  become: yes  # Use sudo for all operations
+  become: yes
   tasks:
     - name: Pull Docker image
       ansible.builtin.docker_image:
-        name: cyberlocosai/check-point-se-lab:cloud-apache-vuln
+        name: webgoat/webgoat
+        tag: latest
         source: pull
 
-    - name: Run Docker container with specific IP and port mappings
+    - name: Run Docker container with specific IP and expose port 8080
       ansible.builtin.docker_container:
-        name: "check-point-se-lab-container"
-        image: "cyberlocosai/check-point-se-lab:cloud-apache-vuln"
+        name: "webgoat"
+        image: "webgoat/webgoat:latest"
         state: started
         restart_policy: always
-        ports:
-          - "50443:50443"
-          - "22:22"
-          - "443:443"
-          - "80:80"
+        published_ports:
           - "8080:8080"
-          - "25:25"
-          - "20:20"
-          - "21:21"
-          - "53:53"
-          - "143:143"
-        networks_advanced:
+        env:
+          TZ: "America/New_York"
+        networks:
           - name: cp_se_dockernet
             ipv4_address: 10.10.10.100
