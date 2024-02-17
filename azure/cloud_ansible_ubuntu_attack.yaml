@@ -1,0 +1,21 @@
+---
+- name: DEPLOYING ATTACK PLATFORM
+  hosts: ubuntu_docker_main_machines
+  become: yes  # Use sudo for all operations
+  tasks:
+    - name: Pull Docker image
+      ansible.builtin.docker_image:
+        name: cyberlocosai/check-point-se-lab:ubuntu-attack
+        source: pull
+
+    - name: Run Docker container with specific IP and port mappings
+      ansible.builtin.docker_container:
+        name: "ubuntu-attack"
+        image: "cyberlocosai/check-point-se-lab:ubuntu-attack"
+        state: started
+        restart_policy: always
+        ports:
+          - "1337:1337"
+        networks:
+          - name: cp_se_dockernet
+            ipv4_address: 10.10.10.5

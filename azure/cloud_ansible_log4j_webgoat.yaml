@@ -1,0 +1,24 @@
+---
+- name: DEPLOYING WEBGOAT SERVER
+  hosts: ubuntu_docker_main_machines
+  become: yes
+  tasks:
+    - name: Pull Docker image
+      ansible.builtin.docker_image:
+        name: webgoat/webgoat
+        tag: latest
+        source: pull
+
+    - name: Run Docker container with specific IP and expose port 8080
+      ansible.builtin.docker_container:
+        name: "webgoat"
+        image: "webgoat/webgoat:latest"
+        state: started
+        restart_policy: always
+        published_ports:
+          - "8080:8080"
+        env:
+          TZ: "America/New_York"
+        networks:
+          - name: cp_se_dockernet
+            ipv4_address: 10.10.10.100

@@ -1,0 +1,81 @@
+---
+- name: EXECUTE ORDER 66 - DOCKER BACKBONE
+  hosts: ubuntu_docker_main_machines
+  become: yes  # Use sudo for all operations
+  gather_facts: yes  # Ensure facts are gathered to use ansible_facts['distribution'].lower()
+  vars_files:
+    - cp-se-lab-ansible-secrets.yaml
+
+  tasks:
+    - name: Install SSH
+      ansible.builtin.apt:
+        name: openssh-server
+        state: present
+
+    - name: Start SSH
+      ansible.builtin.service:
+        name: ssh
+        state: started
+        enabled: yes
+
+    - name: Allow SSH through the firewall
+      ansible.builtin.apt:
+        name: ufw
+        state: present
+      register: ufw_installed
+
+    - name: Enable SSH connections on the firewall
+      ansible.builtin.command: ufw allow ssh
+      when: ufw_installed.changed
+
+    - name: Update apt package index
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install packages to allow apt to use a repository over HTTPS
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Add Docker official GPG key
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add the Docker repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Install Docker Engine
+      ansible.builtin.apt:
+        name: docker-ce
+        state: latest
+
+    - name: Install Python3-pip (pip3)
+      ansible.builtin.apt:
+        name: python3-pip
+        state: present
+
+    - name: Install Docker SDK for Python
+      ansible.builtin.pip:
+        name: docker
+        state: present
+
+    - name: Login to Docker Hub
+      ansible.builtin.docker_login:
+        username: "{{ docker_hub_username }}"
+        password: "{{ docker_hub_password }}"
+
+    - name: Create Our Internal Dockernet
+      community.docker.docker_network:
+        name: cp_se_dockernet
+        driver: bridge
+        ipam_config:
+          - subnet: "10.10.10.0/24"
+            gateway: "10.10.10.1"
+        state: present

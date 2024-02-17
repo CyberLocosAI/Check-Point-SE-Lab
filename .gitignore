@@ -1,3 +1,5 @@
+# Check Point SE Lab gitignore v3
+# SECURITY RISK IF EDITED!!!
 # Ignore these file extensions
 *.xls
 *.xlsm
@@ -16,6 +18,7 @@
 
 # Ignore these filenames
 tf_outputs.json
+cp-se-lab-ansible-secrets.yaml
 
 # Python cache
 __pycache__/
@@ -37,3 +40,5 @@ archive/
 
 # Negations - exceptions to the gitignore
 !terraform.exe
+!deployment_checklist.txt
+!lab_guide*.txt

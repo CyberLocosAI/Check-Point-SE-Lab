@@ -12,6 +12,7 @@ import boto3
 import time
 import paramiko
 import json
+import re
 from dotenv import load_dotenv
 
 
@@ -95,20 +96,16 @@ class CONTROLLER:
         with open(env_file_name, 'w') as file:
             file.writelines(updated_lines)
 
-    def create_ansible_hosts_file_for_ubuntu(self, json_output_file, hosts_file, 
+    def aws_create_ansible_hosts_file(self, json_output_file, hosts_file, 
                                             ssh_key_file, ansible_user):
         with open(json_output_file, 'r') as file:
             data = json.load(file)
-
         vpc_details = data['vpc_details']['value']
-
         ubuntu_ips = []
-
         for vpc_id, vpc_info in vpc_details.items():
             for subnet_info in vpc_info['external_subnets'].values():
                 instance_ips = subnet_info.get('instances', [])
                 ubuntu_ips.extend(instance_ips)
-
         with open(hosts_file, 'w') as file:
             file.write("[my_server_group]\n")
             for idx, ip in enumerate(ubuntu_ips):
@@ -116,6 +113,37 @@ class CONTROLLER:
                             f"ansible_ssh_private_key_file={ssh_key_file} "
                             f"ansible_user={ansible_user}\n")
                 
+    def azure_create_ansible_hosts_file(self, json_output_file, hosts_file, ansible_user, tfvars_file):
+        # Read the JSON output file
+        with open(json_output_file, 'r') as file:
+            data = json.load(file)
+        # Extract Ubuntu Docker main public IPs
+        ubuntu_ips = []
+        if "ubuntu_docker_main_public_ips" in data and "value" in data["ubuntu_docker_main_public_ips"]:
+            for key, ip in data["ubuntu_docker_main_public_ips"]["value"].items():
+                if "ubuntu-docker-main-public" in key:
+                    ubuntu_ips.append(ip)
+        # Read the tfvars file to get the admin_password
+        admin_password = None
+        with open(tfvars_file, 'r') as file:
+            for line in file:
+                # Check if line contains the admin_password variable
+                match = re.match(r'^admin_password\s*=\s*"(.*)"$', line)
+                if match:
+                    admin_password = match.group(1)
+                    break
+        # Exit if admin_password is not found
+        if admin_password is None:
+            print("admin_password not found in tfvars file.")
+            return
+        # Write to the hosts file
+        with open(hosts_file, 'w') as file:
+            file.write("[ubuntu_docker_main_machines]\n")
+            for idx, ip in enumerate(ubuntu_ips):
+                file.write(f"server{idx+1} ansible_host={ip} "
+                        f"ansible_user={ansible_user} "
+                        f"ansible_ssh_pass={admin_password}\n")
+    
     def print_vpc_details_to_file(self, json_output_file, output_text_file):
         # Load the JSON data from the Terraform output
         with open(json_output_file, 'r') as file:
@@ -164,8 +192,6 @@ if __name__ == '__main__':
     # os.chdir('./aws')
     # load_dotenv('.env')
 
-    
-    
     ### Terraform
     # This command executes any .tf files in the same directory, be careful!
     # ct.run_command(['terraform', 'apply', '-auto-approve'])
@@ -173,7 +199,7 @@ if __name__ == '__main__':
     # ct.print_vpc_details_to_file('tf_outputs.json', 'full_lab_info_aws.txt')
     
     ### Ansible
-    # ct.create_ansible_hosts_file_for_ubpythuntu(
+    # ct.create_ansible_hosts_file_for_ubuntu(
     #                 json_output_file='tf_outputs.json',  # Path to the Terraform output JSON file
     #                 hosts_file='hosts.ini',  # Output Ansible hosts file
     #                 ssh_key_file='fllabmainkey.pem',  # Path to your SSH private key
@@ -189,13 +215,31 @@ if __name__ == '__main__':
     #############
     ### AZURE ###
     ##############################################################################################
+    # Telling Python to enter the azure directory
     os.chdir('./azure')
-    # ct.run_command(['terraform', 'apply', '-auto-approve'])
-    # time.sleep(30)
-    ct.run_command(['terraform', 'refresh'])
+    
+    ## Terraform
+    ct.run_command(['terraform', 'apply', '-auto-approve'])
+    print(f'\n\nPausing for 3 minutes to allow for initalization...\n\n')
+    time.sleep(180)
+    ct.run_command(['terraform', 'refresh']) # Doing a refresh to grab proper outputs.
     ct.save_terraform_output()
 
-    ### Place all Azure code here.
+    ## Ansible
+    ct.azure_create_ansible_hosts_file(
+                    json_output_file='tf_outputs.json',  # Path to the Terraform output JSON file
+                    hosts_file='core_ubuntu_docker_machines.ini',  # Output Ansible hosts file
+                    ansible_user='instructor',  # Username to login.
+                    tfvars_file='terraform.tfvars'  # Terraform tfvars
+                                            )
+    
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'core_ansible_create_docker_backbone.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_ubuntu_attack.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_apache_vuln.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_log4j_webgoat.yaml'])
+    
+
+
 
     # This is the last command for AZURE, it exits the directory.
     os.chdir(os.path.join(os.getcwd(), os.pardir))
