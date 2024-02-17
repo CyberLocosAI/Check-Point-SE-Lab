@@ -72,7 +72,6 @@ resource "azurerm_network_interface_security_group_association" "student_nic_nsg
   network_security_group_id = azurerm_network_security_group.student_nsg.id
 }
 
-# Adding Custom Script Extension to run SetupVDI.ps1 script on each VM
 resource "azurerm_virtual_machine_extension" "student_vdi_script_extension" {
   count                = var.resource_count
   name                 = "SetupVDIScriptExtension-${count.index}"
@@ -84,7 +83,8 @@ resource "azurerm_virtual_machine_extension" "student_vdi_script_extension" {
   settings = <<SETTINGS
 {
   "fileUris": ["https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/SetupVDI.ps1"],
-  "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File SetupVDI.ps1"
+  "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File SetupVDI.ps1 -AdminPassword '${var.admin_password}'"
 }
 SETTINGS
+  # Ensure to include the sensitive attribute for admin_password variable in your Terraform configurations
 }
