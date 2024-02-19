@@ -19,9 +19,24 @@ $WallpaperUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scr
 $WallpaperPath = Join-Path -Path $HoldFolderPath -ChildPath "LosLocos.jpg"
 Invoke-WebRequest -Uri $WallpaperUrl -OutFile $WallpaperPath
 
+# Download "1.jpg" wallpaper image and place it in the Hold folder
+$WallpaperUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/1.jpg"
+$WallpaperPath = Join-Path -Path $HoldFolderPath -ChildPath "1.jpg"
+Invoke-WebRequest -Uri $WallpaperUrl -OutFile $WallpaperPath
+
+# Download "2.jpg" wallpaper image and place it in the Hold folder
+$WallpaperUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/2.jpg"
+$WallpaperPath = Join-Path -Path $HoldFolderPath -ChildPath "2.jpg"
+Invoke-WebRequest -Uri $WallpaperUrl -OutFile $WallpaperPath
+
+# Download "3.jpg" wallpaper image and place it in the Hold folder
+$WallpaperUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/3.jpg"
+$WallpaperPath = Join-Path -Path $HoldFolderPath -ChildPath "3.jpg"
+Invoke-WebRequest -Uri $WallpaperUrl -OutFile $WallpaperPath
+
 # Download wallpaper.ps1 from blob storage and place it in the Hold folder
-$WallpaperScriptUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/wallpaper.ps1"
-$WallpaperScriptPath = Join-Path -Path $HoldFolderPath -ChildPath "wallpaper.ps1"
+$WallpaperScriptUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/random-wallpapers.ps1"
+$WallpaperScriptPath = Join-Path -Path $HoldFolderPath -ChildPath "random-wallpapers.ps1"
 Invoke-WebRequest -Uri $WallpaperScriptUrl -OutFile $WallpaperScriptPath
 
 # Download SmartConsole.exe from blob storage and place it in the CP folder
@@ -34,10 +49,10 @@ $MobaXtermUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scr
 $MobaXtermPath = Join-Path -Path $CPFolderPath -ChildPath "MobaXterm.exe"
 Invoke-WebRequest -Uri $MobaXtermUrl -OutFile $MobaXtermPath
 
-# Download MobaXterm plugin from blob storage and place it in the CP folder
-$MobaXtermUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/CygUtils64.plugin"
-$MobaXtermPath = Join-Path -Path $CPFolderPath -ChildPath "CygUtils64.plugin"
-Invoke-WebRequest -Uri $MobaXtermUrl -OutFile $MobaXtermPath
+# # Download MobaXterm plugin from blob storage and place it in the CP folder
+# $MobaXtermUrl = "https://vmsetupscriptstorage.blob.core.windows.net/vm-setup-scripts/CygUtils64.plugin"
+# $MobaXtermPath = Join-Path -Path $CPFolderPath -ChildPath "CygUtils64.plugin"
+# Invoke-WebRequest -Uri $MobaXtermUrl -OutFile $MobaXtermPath
 
 # Create a URL shortcut in the CP folder pointing to www.checkpoint.com
 $ShortcutPath = Join-Path -Path $CPFolderPath -ChildPath "CheckPoint.url"
@@ -57,7 +72,8 @@ Register-ScheduledTask -TaskName $TaskName -Action $TaskAction -Trigger $TaskTri
 
 # Setup the scheduled task to run the wallpaper script at user logon
 $TaskName = "SetWallpaperAtLogon"
-$TaskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File C:\Hold\wallpaper.ps1"
+#$TaskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File C:\Hold\wallpaper.ps1"
+$TaskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File C:\Hold\random-wallpapers.ps1"
 $TaskTrigger = New-ScheduledTaskTrigger -AtLogon -User "cpuser"
 $TaskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 1) -StartWhenAvailable
 
