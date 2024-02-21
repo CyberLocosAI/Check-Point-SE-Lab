@@ -38,6 +38,10 @@ Metasploitable
 
 sudo docker run --name ms7 --net cp_se_dockernet --ip 10.10.10.107 -d tleemcjr/metasploitable2:latest sh -c "/bin/services.sh && tail -f /dev/null"
 
+sudo docker run --name metaspanx --net cp_se_dockernet --ip 10.10.10.105 -d cyberlocosai/check-point-se-lab:metasploitable sh -c "/bin/services.sh && tail -f /dev/null"
+
+
+
 Metasploitable is intentionally vulnerable to a wide range of exploits, especially web-based vulnerabilities, to provide a learning environment for security enthusiasts and professionals. Below are some notable web exploits against Metasploitable, along with their paths in Metasploit. These exploits target various services and applications that are known to be vulnerable in the Metasploitable VM.
 
 1. DVWA - SQL Injection

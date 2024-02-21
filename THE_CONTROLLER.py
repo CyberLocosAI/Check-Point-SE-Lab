@@ -202,6 +202,7 @@ if __name__ == '__main__':
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_ubuntu_attack.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_apache_vuln.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_log4j_webgoat.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_metasploitable.yaml'])
     
 
 
