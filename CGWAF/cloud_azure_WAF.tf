@@ -13,28 +13,12 @@ terraform {
 
 provider "azurerm" {
   features {}
- }
-
-resource "null_resource" "get_access_token" {
-  provisioner "local-exec" {
-    command = <<EOT
-      curl -X POST https://cloudinfra-gw-us.portal.checkpoint.com/auth/external \
-      -H "Content-Type: application/json" \
-      -d '{
-        "client_id": "${var.client_id}",
-        "access_key": "${var.access_key}"
-      }'
-    EOT
-  }
 }
 
-provider "inext" {
-  region = "us"
-  client_id  = "var.client_id"  
-  access_key = "var.access_key" 
-}
-
-#resource "inext_access_token" "access_token" {}
+# variable "client_id" {}
+# variable "access_key" {}
+# variable "admin_username" {}
+# variable "admin_password" {}
 
 resource "azurerm_resource_group" "CGWAF" {
   name     = "CGWAF-resources"
@@ -55,27 +39,23 @@ resource "azurerm_subnet" "CGWAF_subnet" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-resource "azurerm_network_interface" "CGWAF_nic1" {
-  name                = "CGWAFNIC1"
+resource "azurerm_public_ip" "CGWAF_public_ip" {
+  name                = "CGWAFPublicIP"
   location            = "East US"
   resource_group_name = azurerm_resource_group.CGWAF.name
-
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = azurerm_subnet.CGWAF_subnet.id
-    private_ip_address_allocation = "Dynamic"
-  }
+  allocation_method   = "Static"
 }
 
-resource "azurerm_network_interface" "CGWAF_nic2" {
-  name                = "CGWAFNIC2"
+resource "azurerm_network_interface" "CGWAF_nic_public" {
+  name                = "CGWAFNICPublic"
   location            = "East US"
   resource_group_name = azurerm_resource_group.CGWAF.name
 
   ip_configuration {
-    name                          = "internal"
+    name                          = "public"
     subnet_id                     = azurerm_subnet.CGWAF_subnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.CGWAF_public_ip.id
   }
 }
 
@@ -87,9 +67,8 @@ resource "azurerm_linux_virtual_machine" "web1" {
   admin_username      = var.admin_username
   admin_password      = var.admin_password
   network_interface_ids = [
-    azurerm_network_interface.CGWAF_nic1.id,
+    azurerm_network_interface.CGWAF_nic_public.id,
   ]
-
 
   os_disk {
     caching              = "ReadWrite"
@@ -102,8 +81,18 @@ resource "azurerm_linux_virtual_machine" "web1" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
- 
-  disable_password_authentication = false // Ensure password authentication is enabled
+
+  disable_password_authentication = false
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y python3-pip",
+      "pip3 install Flask",
+      "echo \"from flask import Flask\napp = Flask(__name__)\n@app.route('/')\ndef hello_world():\n  return 'Hello, World! from Server 1'\nif __name__ == '__main__':\n  app.run(host='0.0.0.0')\" > helloworld1.py",
+      "nohup python3 helloworld1.py &"
+    ]
+  }
 }
 
 resource "azurerm_linux_virtual_machine" "web2" {
@@ -114,7 +103,7 @@ resource "azurerm_linux_virtual_machine" "web2" {
   admin_username      = var.admin_username
   admin_password      = var.admin_password
   network_interface_ids = [
-    azurerm_network_interface.CGWAF_nic2.id,
+    azurerm_network_interface.CGWAF_nic_public.id,
   ]
 
   os_disk {
@@ -129,10 +118,24 @@ resource "azurerm_linux_virtual_machine" "web2" {
     version   = "latest"
   }
 
-  disable_password_authentication = false // Ensure password authentication is enabled
- }
+  disable_password_authentication = false
 
-### Check Point Infinity Next (inext) configuration This builds the CG WAF
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y python3-pip",
+      "pip3 install Flask",
+      "echo \"from flask import Flask\napp = Flask(__name__)\n@app.route('/')\ndef hello_world():\n  return 'Hello, World! from Server 2'\nif __name__ == '__main__':\n  app.run(host='0.0.0.0')\" > helloworld2.py",
+      "nohup python3 helloworld2.py &"
+    ]
+  }
+}
+
+provider "inext" {
+  region = "us"
+  client_id  = var.client_id  
+  access_key = var.access_key 
+}
 
 resource "inext_web_app_asset" "CGWAF_web_app" {
   name            = "CGWAF Web Application"
@@ -182,18 +185,6 @@ resource "inext_web_app_practice" "CGWAF_protection" {
     }
   }
 }
-
-# resource "inext_exceptions" "CGWAF_exceptions" {
-#   name = "CGWAF Exceptions"
-#   exception {
-#     match {
-#       url              = "/"
-#       sourceIdentifier = "1.1.1.1/24"
-#     }
-#     action  = "allow"
-#     comment = "Allow authenticated traffic"
-#   }
-# }
 
 resource "inext_exceptions" "CGWAF_exceptions" {
   name = "CGWAF Exceptions"
