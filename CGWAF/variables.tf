@@ -17,3 +17,8 @@ variable "access_key" {
   description = "Access key for inext provider authentication"
   type        = string
 }
+
+variable "checkpoint_token" {
+  description = "App token from profile in Infinity Portal"
+  type        = string
+}
