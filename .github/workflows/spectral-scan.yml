@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v3  # Check out the code
 
       - name: Install Spectral (if needed)
-        run: npm install -g spectral  # Install Spectral
+        run: npm install -g @stoplight/spectral-cli  # Install Spectral
 
       - name: Execute Spectral Scan
         run: spectral lint **/*.yaml  # Scan all relevant files
