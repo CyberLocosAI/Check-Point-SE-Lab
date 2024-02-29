@@ -1,0 +1,36 @@
+extends: spectral:oas # Assuming you work with OpenAPI Specs
+
+functions:
+  patternMatch: # Helper function for regex matching
+    description: Checks if a value matches a pattern
+    type: validation 
+    message: "Potential secret found!"
+    given: 
+      - $
+    then:
+      - pattern: (your-regex-here)
+
+rules: 
+  generic-api-key:
+    description: "Potential generic API key exposed."
+    formats: all
+    given: $..[?(@property =~ /key|token/i)] # May need to adjust the selector 
+    then:
+      - function: patternMatch
+        pattern: /^[a-zA-Z0-9]{32,64}$/  
+
+  azure-subscription-key:
+    description: "Potential Azure subscription key exposure."
+    formats: all
+    given: $..[?(@property =~ /subscription|key/i)] # Adjust the selector if needed
+    then:
+      - function: patternMatch
+        pattern:  ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ 
+
+  bearer-token: 
+    description: "Potential JWT bearer token exposed."
+    formats: all
+    given: $
+    then:
+      - function: patternMatch
+        pattern: /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/
