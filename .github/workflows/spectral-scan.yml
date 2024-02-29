@@ -1,0 +1,20 @@
+name: Spectral Linting  # Give the workflow a name
+
+on:  # Trigger the worflow on code push
+  push: 
+    branches: 
+      - raffi-cgwaf  # Adjust the branch if needed 
+     
+
+jobs:
+  spectral-scan:  # Name the job
+    runs-on: ubuntu-latest  # Specify the OS runner
+
+    steps:
+      - uses: actions/checkout@v3  # Check out the code
+
+      - name: Install Spectral (if needed)
+        run: npm install -g spectral  # Install Spectral
+
+      - name: Execute Spectral Scan
+        run: spectral lint **/*.yaml  # Scan all relevant files
