@@ -1,10 +1,12 @@
 name: Spectral Linting  # Give the workflow a name
 
-on:  # Trigger the worflow on code push
-  push: 
+on:
+  push:
     branches: 
-      - raffi-cgwaf  # Adjust the branch if needed 
-     
+      - raffi-cgwaf
+  pull_request:
+    branches: 
+      - raffi-cgwaf  
 
 jobs:
   spectral-scan:  # Name the job
