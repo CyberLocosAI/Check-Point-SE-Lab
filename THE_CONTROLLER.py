@@ -10,10 +10,8 @@ import subprocess
 import os
 import boto3
 import time
-import paramiko
 import json
 import re
-from dotenv import load_dotenv
 
 
 class CONTROLLER:
@@ -35,22 +33,6 @@ class CONTROLLER:
             # Handle the case where the command is not found
             print(f"Command not found: {' '.join(command)}")
 
-    def run_command_remote_ssh(self, host, username, key_file, commands): # If you are chaining commands, seperate with ' && '
-        key = paramiko.RSAKey.from_private_key_file(key_file)
-        client = paramiko.SSHClient()
-        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        try:
-            client.connect(hostname=host, username=username, pkey=key)
-            stdin, stdout, stderr = client.exec_command(commands)
-            output = stdout.read().decode()
-            if output:
-                print("Output:", output)
-            error = stderr.read().decode()
-            if error:
-                print("Error:", error)
-        finally:
-            client.close()
-    
     def save_terraform_output(self):
         command = "terraform output -json"
         output_file = "tf_outputs.json"
@@ -79,23 +61,6 @@ class CONTROLLER:
         latest_image = max(images, key=lambda x: x['CreationDate'])
         return latest_image['ImageId']
     
-    def update_env_file(self, env_file_name, key, value):
-        # Read the existing content
-        with open(env_file_name, 'r') as file:
-            lines = file.readlines()
-
-        # Modify the line
-        updated_lines = []
-        for line in lines:
-            if line.startswith(key):
-                updated_lines.append(f"{key}={value}\n")
-            else:
-                updated_lines.append(line)
-
-        # Write the updated content
-        with open(env_file_name, 'w') as file:
-            file.writelines(updated_lines)
-
     def aws_create_ansible_hosts_file(self, json_output_file, hosts_file, 
                                             ssh_key_file, ansible_user):
         with open(json_output_file, 'r') as file:
@@ -237,6 +202,7 @@ if __name__ == '__main__':
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_ubuntu_attack.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_apache_vuln.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_log4j_webgoat.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'cloud_ansible_metasploitable.yaml'])
     
 
 
