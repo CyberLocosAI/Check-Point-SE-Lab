@@ -1,0 +1,15 @@
+---
+- name: DEPLOYING METASPLOITABLE
+  hosts: ubuntu_docker_main_machines
+  become: true
+  tasks:
+    - name: Ensure the Metasploitable container is running
+      docker_container:
+        name: metaspanx
+        image: cyberlocosai/check-point-se-lab:cloud-metasploitable
+        state: started
+        restart_policy: always
+        network_mode: bridge
+        networks:
+          - name: cp_se_dockernet
+            ipv4_address: 10.10.10.105

@@ -10,7 +10,8 @@ resource_group_name = "FL-SE-AZURE-resources"
 disk_size           = 100 #100 GB for the Check Point VM
 vm_size             = "Standard_B2ms" # VMs for CP Managers
 admin_username      = "cpuser" # VDI User
-admin_password      = "<ADMIN_PASSWORD>" # Admin password for CP Manager and VDI
+# DO NOT ADD DESCRIPTION FOR ADMIN PASSWORD
+admin_password      = "<ADMIN_PASSWORD>"
 ubuntu_monster_vm_size = "Standard_D2s_v3" # Monster Ubuntu VMs
 # Optionally, if you have a bootstrap script
 # bootstrap_script = "<YOUR_ENCODED_BOOTSTRAP_SCRIPT>"
