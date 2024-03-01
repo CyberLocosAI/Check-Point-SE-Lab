@@ -81,18 +81,7 @@ resource "azurerm_container_group" "cgwaf_containers" {
     }
   }
 
-  # # Correct way to specify ports for the container group
-  # ports {
-  #   port     = 80
-  #   protocol = "TCP"
-  # }
 
-  # Assuming only the Check Point AppSec container's port needs to be exposed publicly
-  # Remove or comment out the WebGoat container's port if it should not be directly accessible
-  # ports {
-  #   port     = 8080
-  #   protocol = "TCP"
-  # }
 }
 
 # Output the DNS name to access the application
