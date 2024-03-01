@@ -1,8 +1,8 @@
 ## check-point-se-lab
 
-## **The fully IaaC Check Point SE Lab**
+## **The fully IaC Check Point SE Lab**
 
-**This kit contains a fully modular, scalable, and customizable IaaC Cloud lab.**
+**This kit contains a fully modular, scalable, and customizable IaC Cloud lab.**
 
 **developed by**
 
