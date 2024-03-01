@@ -1,22 +1,18 @@
-name: Spectral Linting  # Give the workflow a name
-
+name: Main
 on:
   push:
-    branches: 
-      - raffi-cgwaf
-  pull_request:
-    branches: 
-      - raffi-cgwaf  
+    branches: [ main ]
+    
+env:
+  SPECTRAL_DSN: ${{ secrets.SPECTRAL_DSN }}
 
 jobs:
-  spectral-scan:  # Name the job
-    runs-on: ubuntu-latest  # Specify the OS runner
-
+  scan:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3  # Check out the code
-
-      - name: Install Spectral (if needed)
-        run: npm install -g @stoplight/spectral-cli  # Install Spectral
-
-      - name: Execute Spectral Scan
-        run: spectral lint **/*.yaml  # Scan all relevant files
+    - uses: actions/checkout@v2
+    - name: Install and run Spectral CI
+      uses: spectralops/spectral-github-action@v3
+      with:
+        spectral-dsn: ${{ env.SPECTRAL_DSN }}
+        spectral-args: scan --ok  --include-tags base,audit
