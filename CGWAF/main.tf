@@ -81,7 +81,6 @@ resource "azurerm_container_group" "cgwaf_containers" {
     }
   }
 
-
 }
 
 # Output the DNS name to access the application
