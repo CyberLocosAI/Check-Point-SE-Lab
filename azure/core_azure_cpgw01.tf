@@ -29,13 +29,13 @@ resource "azurerm_linux_virtual_machine" "checkpoint_fw" {
   location             = var.location
   resource_group_name  = var.resource_group_name
   network_interface_ids = [azurerm_network_interface.checkpoint_gateway_nic[count.index].id]
-  size                 = "Standard_F4" # Ensure this size meets your requirements
+  size                 = var.vm_size
 
   # Specify Check Point image
   source_image_reference {
     publisher = "checkpoint"
-    offer     = "check-point-cg-r8120" # Ensure this is the correct offer for your Gateway
-    sku       = "sg-byol" # Ensure this SKU matches your needs
+    offer     = "check-point-cg-r8120" 
+    sku       = "sg-byol" 
     version   = "latest"
   }
 
