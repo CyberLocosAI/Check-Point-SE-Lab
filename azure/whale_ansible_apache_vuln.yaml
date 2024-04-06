@@ -11,7 +11,7 @@
     - name: Run Docker container with specific IP and port mappings
       ansible.builtin.docker_container:
         name: "check-point-se-lab-container"
-        image: "cyberlocosai/check-point-se-lab:cloud-apache-vuln"
+        image: "cyberlocosai/check-point-se-lab:cloud-apache-vuln-v3"
         state: started
         restart_policy: always
         networks:
