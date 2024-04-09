@@ -4,11 +4,11 @@
 # Last updated February 2024
 # O_o tHe pAcKeTs nEvEr LiE o_O #
 
-# Need to pip install boto3, paramiko
+# Need to pip install boto3, paramiko for aws
 
 import subprocess
 import os
-import boto3
+# import boto3 for future use
 import time
 import json
 import re
