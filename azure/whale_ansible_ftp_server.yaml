@@ -6,7 +6,7 @@
     - name: Spinning up the ftp server for hacking lab
       docker_container:
         name: spicy_tacos
-        image: cyberlocosai/check-point-se-lab:whale-ftp-server-v3
+        image: cyberlocosai/check-point-se-lab:whale-ftp-server-v4
         state: started
         restart_policy: always
         network_mode: bridge
