@@ -84,10 +84,10 @@ class CONTROLLER:
             data = json.load(file)
         # Extract Ubuntu Docker main public IPs
         ubuntu_ips = []
-        if "ubuntu_docker_main_public_ips" in data and "value" in data["ubuntu_docker_main_public_ips"]:
-            for key, ip in data["ubuntu_docker_main_public_ips"]["value"].items():
-                if "ubuntu-docker-main-public" in key:
-                    ubuntu_ips.append(ip)
+        ubuntu_docker_main_ips = data.get('ubuntu_docker_main_ips', {}).get('value', {})
+        for key, ip_details in ubuntu_docker_main_ips.items():
+            if "public_ip" in ip_details:
+                ubuntu_ips.append(ip_details['public_ip'])
         # Read the tfvars file to get the admin_password
         admin_password = None
         with open(tfvars_file, 'r') as file:
@@ -109,41 +109,43 @@ class CONTROLLER:
                         f"ansible_user={ansible_user} "
                         f"ansible_ssh_pass={admin_password}\n")
     
-    def print_vpc_details_to_file(self, json_output_file, output_text_file):
-        # Load the JSON data from the Terraform output
-        with open(json_output_file, 'r') as file:
-            data = json.load(file)['vpc_details']['value']
+    def process_terraform_data(self, filename, output_filename):
+        with open(filename, 'r') as file:
+            data = json.load(file)
+            
+        # Prepare to gather output for all students
+        content = ""
 
-        with open(output_text_file, 'w') as file:
-            for vpc_id, vpc_info in data.items():
-                file.write(f"VPC ID: {vpc_id}\n")
-                file.write(f"CIDR Block: {vpc_info['cidr_block']}\n")
-                file.write(f"DNS Hostnames: {vpc_info['dns_hostnames']}\n")
-                file.write(f"DNS Support: {vpc_info['dns_support']}\n")
-                file.write(f"Internet Gateway: {vpc_info['internet_gateway']}\n")
+        # Loop through the student VDI details
+        for key, student in data['student_vdi_details']['value'].items():
+            if key.startswith('student-vdi-'):
+                student_id = key.split('-')[-1]  # Extracts the student number from the key
+                student_vdi_ip = student['Public_IP']
+                
+                # Assuming there is a corresponding ubuntu machine entry for each student
+                ubuntu_private_ip = data['ubuntu_docker_main_ips']['value'].get(f'ubuntu-docker-main-{student_id}', {}).get('private_ip', 'N/A')
+                
+                subnets = data['vpc_subnet_details']['value']['FL-SE-AZURE-vnet-1']['subnets']
+                external_subnet = ', '.join(subnets['external'][0])
+                internal_subnet = ', '.join(subnets['internal'][0])
+                dmz_subnet = ', '.join(subnets['dmz'][0])
 
-                # Subnets
-                if 'external_subnets' in vpc_info:
-                    file.write("\nExternal Subnets:\n")
-                    for subnet_id, subnet_info in vpc_info['external_subnets'].items():
-                        file.write(f"  Subnet ID: {subnet_id}\n")
-                        file.write(f"  CIDR Block: {subnet_info['cidr_block']}\n")
-                        if 'instances' in subnet_info:
-                            file.write("  Instances:\n")
-                            for ip in subnet_info['instances']:
-                                file.write(f"    IP: {ip}\n")
+                # Append the formatted text for this student to the content string
+                content += f"""
 
-                if 'internal_subnet' in vpc_info:
-                    file.write("\nInternal Subnets:\n")
-                    file.write(f"  Subnet ID: {vpc_info['internal_subnet']['id']}\n")
-                    file.write(f"  CIDR Block: {vpc_info['internal_subnet']['cidr_block']}\n")
+                            -----------------------------------------------
+                            Student {student_id}
+                            VDI Machine - {student_vdi_ip}
+                            Ubuntu Machine - {ubuntu_private_ip}
+                            External Subnet - {external_subnet}
+                            Internal Subnet - {internal_subnet}
+                            DMZ Subnet - {dmz_subnet}
+                            -----------------------------------------------
 
-                if 'dmz_subnet' in vpc_info:
-                    file.write("\nDMZ Subnets:\n")
-                    file.write(f"  Subnet ID: {vpc_info['dmz_subnet']['id']}\n")
-                    file.write(f"  CIDR Block: {vpc_info['dmz_subnet']['cidr_block']}\n")
-
-                file.write("\n--------------------------------------------------\n")
+                            """
+        # Write to the output file
+        with open(output_filename, 'w') as output_file:
+            output_file.write(content)
 
 
 if __name__ == '__main__':
@@ -205,8 +207,8 @@ if __name__ == '__main__':
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_metasploitable.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_ftp_server.yaml'])
     
-
-
+    ## Output File
+    ct.process_terraform_data('tf_outputs.json', 'STUDENT_LAB_INFO.txt')
 
     # This is the last command for AZURE, it exits the directory.
     os.chdir(os.path.join(os.getcwd(), os.pardir))

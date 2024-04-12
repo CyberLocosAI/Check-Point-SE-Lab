@@ -90,16 +90,15 @@ SETTINGS
   # Ensure to include the sensitive attribute for admin_password variable in your Terraform configurations
 }
 
-# Output block for Student VDI Virtual Machines
+# Updated Output block for Student VDI Virtual Machines
 output "student_vdi_details" {
   value = {
-    "VM_IDs" = azurerm_windows_virtual_machine.student_vdi.*.id
-    "Public_IPs" = [
-      for i, ip in azurerm_public_ip.student_vdi_ip : {
-        id = ip.id
-        public_ip_address = ip.ip_address
-      }
-    ]
+    for index, vm_id in azurerm_windows_virtual_machine.student_vdi.*.id :
+    "student-vdi-${index + 1}" => {
+      "VM_ID" = vm_id
+      "Public_IP" = azurerm_public_ip.student_vdi_ip[index].ip_address
+    }
   }
-  description = "IDs and Public IP Addresses of Student VDI VMs"
+  description = "IDs and Public IP Addresses of Student VDI VMs, labeled by student number"
 }
+
