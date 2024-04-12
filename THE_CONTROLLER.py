@@ -8,7 +8,7 @@
 
 import subprocess
 import os
-# import boto3 for future use
+# import boto3 for future use with AWS
 import time
 import json
 import re
