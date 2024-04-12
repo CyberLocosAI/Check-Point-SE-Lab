@@ -201,7 +201,7 @@ if __name__ == '__main__':
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'core_ansible_create_docker_backbone.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_ubuntu_attack.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_apache_vuln.yaml'])
-    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_log4j_webgoat.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_webgoat.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_metasploitable.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_ftp_server.yaml'])
     

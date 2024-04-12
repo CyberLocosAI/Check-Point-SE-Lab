@@ -11,7 +11,7 @@
     - name: Run Docker container with specific IP and port mappings
       ansible.builtin.docker_container:
         name: "ubuntu-attack"
-        image: "cyberlocosai/check-point-se-lab:ubuntu-attack"
+        image: "cyberlocosai/check-point-se-lab:whale-attack-platform-v1"
         state: started
         restart_policy: always
         ports:
