@@ -8,7 +8,7 @@
 
 import subprocess
 import os
-import boto3
+#import boto3
 import time
 import json
 import re
