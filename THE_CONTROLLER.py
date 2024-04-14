@@ -112,18 +112,26 @@ class CONTROLLER:
     def process_terraform_data(self, filename, output_filename):
         with open(filename, 'r') as file:
             data = json.load(file)
-            
-        # Prepare to gather output for all students
+    
+        # NATO phonetic alphabet (covers up to 26 students)
+        phonetic_alphabet = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", 
+                             "India", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa", 
+                             "Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey", 
+                             "X-ray", "Yankee", "Zulu"]
         content = ""
-
         # Loop through the student VDI details
         for key, student in data['student_vdi_details']['value'].items():
             if key.startswith('student-vdi-'):
-                student_id = key.split('-')[-1]  # Extracts the student number from the key
+                # Extract the student number from the key and convert it to an index
+                student_index = int(key.split('-')[-1]) - 1  # assuming student-vdi-1 corresponds to index 0
+                
+                # Use the phonetic alphabet for naming, default to numeric if out of range
+                student_name = phonetic_alphabet[student_index] if student_index < len(phonetic_alphabet) else f"Student {student_index + 1}"
+                
                 student_vdi_ip = student['Public_IP']
                 
                 # Assuming there is a corresponding ubuntu machine entry for each student
-                ubuntu_private_ip = data['ubuntu_docker_main_ips']['value'].get(f'ubuntu-docker-main-{student_id}', {}).get('private_ip', 'N/A')
+                ubuntu_private_ip = data['ubuntu_docker_main_ips']['value'].get(f'ubuntu-docker-main-{student_index + 1}', {}).get('private_ip', 'N/A')
                 
                 subnets = data['vpc_subnet_details']['value']['FL-SE-AZURE-vnet-1']['subnets']
                 external_subnet = ', '.join(subnets['external'][0])
@@ -132,16 +140,14 @@ class CONTROLLER:
 
                 # Append the formatted text for this student to the content string
                 content += f"""
-
                             -----------------------------------------------
-                            Student {student_id}
+                            Student {student_name}
                             VDI Machine - {student_vdi_ip}
                             Ubuntu Machine - {ubuntu_private_ip}
                             External Subnet - {external_subnet}
                             Internal Subnet - {internal_subnet}
                             DMZ Subnet - {dmz_subnet}
                             -----------------------------------------------
-
                             """
         # Write to the output file
         with open(output_filename, 'w') as output_file:
