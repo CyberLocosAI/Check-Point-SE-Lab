@@ -117,7 +117,15 @@ class CONTROLLER:
         phonetic_alphabet = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", 
                              "India", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa", 
                              "Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey", 
-                             "X-ray", "Yankee", "Zulu"]
+                             "X-ray", "Yankee", "Zulu", "Antonio", "Barcelona", "Carmen", "Domingo", "Enrique", "Francia",
+                             "Granada", "Historia", "Inés", "José", "Kilo", "Lorenzo",
+                             "Madrid", "Navidad", "Ñoño", "Otoño", "París", "Querétaro",
+                             "Ramón", "Santiago", "Teresa", "Ulises", "Valencia", "Washington",
+                             "Xilófono", "Yolanda", "Zaragoza", "Anatole", "Berthe", "Célestin", "Désiré", "Eugène", "François",
+                             "Gaston", "Henri", "Irma", "Joseph", "Kléber", "Louis",
+                             "Marcel", "Nicolas", "Oscar", "Pierre", "Quentin", "Raoul",
+                             "Suzanne", "Thérèse", "Ursule", "Victor", "William", "Xavier",
+                             "Yvonne", "Zoé"]
         content = ""
         # Loop through the student VDI details
         for key, student in data['student_vdi_details']['value'].items():
