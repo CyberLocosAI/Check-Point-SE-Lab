@@ -54,10 +54,13 @@ resource "azurerm_linux_virtual_machine" "ubuntu_docker_main" {
   }
 }
 
-output "ubuntu_docker_main_public_ips" {
+output "ubuntu_docker_main_ips" {
   value = {
-    for idx, ip in azurerm_public_ip.ubuntu_docker_main_public_ip :
-    "ubuntu-docker-main-public-ip-${idx + 1}" => ip.ip_address
+    for idx in range(var.resource_count) :
+    "ubuntu-docker-main-${idx + 1}" => {
+      "public_ip"  = azurerm_public_ip.ubuntu_docker_main_public_ip[idx].ip_address
+      "private_ip" = azurerm_network_interface.ubuntu_docker_main_nic[idx].ip_configuration[0].private_ip_address
+    }
   }
-  description = "The public IP addresses of the Ubuntu Docker main virtual machines, with counts starting at 1."
+  description = "The public and private IP addresses of the Ubuntu Docker main virtual machines, with counts starting at 1."
 }

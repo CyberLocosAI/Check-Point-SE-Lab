@@ -1,21 +1,19 @@
 ---
-- name: DEPLOYING ATTACK PLATFORM
+- name: DEPLOYING VUNERABLE APACHE MACHINE
   hosts: ubuntu_docker_main_machines
   become: yes  # Use sudo for all operations
   tasks:
     - name: Pull Docker image
       ansible.builtin.docker_image:
-        name: cyberlocosai/check-point-se-lab:ubuntu-attack
+        name: cyberlocosai/check-point-se-lab:cloud-apache-vuln
         source: pull
 
     - name: Run Docker container with specific IP and port mappings
       ansible.builtin.docker_container:
-        name: "ubuntu-attack"
-        image: "cyberlocosai/check-point-se-lab:ubuntu-attack"
+        name: "www-main"
+        image: "cyberlocosai/check-point-se-lab:whale-apache-vuln-v1"
         state: started
         restart_policy: always
-        ports:
-          - "1337:1337"
         networks:
           - name: cp_se_dockernet
-            ipv4_address: 10.10.10.5
+            ipv4_address: 10.10.10.69

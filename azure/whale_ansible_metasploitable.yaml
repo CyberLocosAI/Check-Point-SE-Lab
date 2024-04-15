@@ -6,7 +6,7 @@
     - name: Ensure the Metasploitable container is running
       docker_container:
         name: metaspanx
-        image: cyberlocosai/check-point-se-lab:cloud-metasploitable
+        image: cyberlocosai/check-point-se-lab:whale-metasploitable-v1
         state: started
         restart_policy: always
         network_mode: bridge
