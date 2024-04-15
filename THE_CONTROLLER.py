@@ -113,7 +113,7 @@ class CONTROLLER:
         with open(filename, 'r') as file:
             data = json.load(file)
     
-        # NATO phonetic alphabet (covers up to 26 students)
+        # NATO phonetic alphabet (covers up to 78 students)
         phonetic_alphabet = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", 
                              "India", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa", 
                              "Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey", 
@@ -213,7 +213,7 @@ if __name__ == '__main__':
                     ansible_user='instructor',  # Username to login.
                     tfvars_file='terraform.tfvars'  # Terraform tfvars
                                             )
-    
+        ### Playbooks for Ubuntu Server
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'core_ansible_create_docker_backbone.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_ubuntu_attack.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_apache_vuln.yaml'])
@@ -221,7 +221,11 @@ if __name__ == '__main__':
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_metasploitable.yaml'])
     ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_ftp_server.yaml'])
     
-    ## Output File
+        ### Playbooks for Check Point Manager
+
+        ### Playbooks for Check Point Firewall
+    
+    ## Output Student Lab File
     ct.process_terraform_data('tf_outputs.json', 'STUDENT_LAB_INFO.txt')
 
     # This is the last command for AZURE, it exits the directory.
