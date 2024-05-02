@@ -3,7 +3,13 @@ $WallpaperPaths = @(
     "C:\Hold\LosLocos.jpg",
     "C:\Hold\1.jpg", 
     "C:\Hold\2.jpg", 
-    "C:\Hold\3.jpg"  
+    "C:\Hold\3.jpg",
+    "C:\Hold\4.jpg", 
+    "C:\Hold\5.jpg",
+    "C:\Hold\6.jpg", 
+    "C:\Hold\7.jpg",
+    "C:\Hold\8.jpg", 
+    "C:\Hold\9.jpg"  
     # Add more paths as needed
 )
 
