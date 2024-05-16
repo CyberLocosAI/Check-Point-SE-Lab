@@ -41,7 +41,7 @@ resource "azurerm_windows_virtual_machine" "student_vdi" {
   source_image_reference {
     publisher = "MicrosoftWindowsDesktop"
     offer     = "Windows-10"
-    sku       = "20h2-pro-g2"
+    sku       = "win10-22h2-avd"
     version   = "latest"
   }
 }
