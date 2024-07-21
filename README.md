@@ -10,6 +10,9 @@
 
 **tHe fLoRiDa tEaM**
 
+<img src="images/Lab_Diagram.jpg" alt="Screenshot" width="600">
+-------------------------------------------------------------
+------------------------------------------------------------
 ![Lab Diagram](images/Lab_Diagram.jpg)
 
 ## **Content**
