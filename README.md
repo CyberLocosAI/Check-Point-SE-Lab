@@ -2,13 +2,15 @@
 
 ## **The fully IaC Check Point SE Lab**
 
-**This kit contains a fully modular, scalable, and customizable IaC Cloud lab.**
+**This kit contains a fully modular, scalable, and customizable IaC Cloud lab designed to be deployed in Microsoft Azure.**
 
 **developed by**
 
 **Raffi Ali, Hector Mora, Frank Rivas, and Travis Lockman**
 
 **tHe fLoRiDa tEaM**
+
+![Lab Diagram](images/Lab_Diagram.jpg)
 
 ## **Content**
 The lab is created with Python, Terraform, Ansible, Docker.
