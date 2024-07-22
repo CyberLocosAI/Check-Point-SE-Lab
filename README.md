@@ -11,8 +11,8 @@
 **tHe fLoRiDa tEaM**
 
 <div align="center">
-  <img src="images/logo.png" alt="Project Logo" width="200" height="200">
-</div> 
+<img src="images/Lab_Diagram.jpg" alt="Screenshot" width="300">
+</div>
 
 ## **Content**
 The lab is created with Python, Terraform, Ansible, Docker.
