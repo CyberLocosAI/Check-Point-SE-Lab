@@ -2,6 +2,10 @@
 
 ## **The fully IaC Check Point SE Lab**
 
+<div align="center">
+<img src="images/locoslogo.jpg" alt="Screenshot" width="500">
+</div>
+
 **This kit contains a fully modular, scalable, and customizable IaC Cloud lab designed to be deployed in Microsoft Azure.**
 
 **developed by**
