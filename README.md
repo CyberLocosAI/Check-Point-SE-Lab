@@ -1,6 +1,8 @@
 ## check-point-se-lab
 
-## **The fully IaC Check Point SE Lab**
+<div align="center">
+  <h2><strong>The fully IaC Check Point SE Lab</strong></h2>
+</div>
 
 <div align="center">
 <img src="images/locoslogo.jpg" alt="Screenshot" width="500">
