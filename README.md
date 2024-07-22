@@ -48,9 +48,39 @@ We need to make our dockerhub public!
 
 ## **Prerequisites**
 
+### Azure ###
+
+1. Create an application for terraform in Entra.
+2. Assign the service principal of your application to the contributor role.
+
+3. Update the tfvars file with your account info and application info. 
+Please note the client secret is the VALUE of the secret 
+not the id of the secret.
+
+4. Accept license agreements using azure cli with these commands
+-az login
+-az vm image terms accept --urn checkpoint:check-point-cg-r8120:mgmt-byol:latest
+-az vm image terms accept --urn checkpoint:check-point-cg-r8120:sg-byol:latest
+
+5. Increase vCPU quota. (Need to be off trial)
+
+6. Increase public IP quota. (Need to be off trial)
+
+
+
 ## **Environment Prep**
 
-More to come
+### Prep your Linux SubSystem ###
+-Update FIRST
+-install terraform
+-install ansible
+-install sshpass
+
+# Azure Ansible
+-need to install sshpass on the system running ansible when using username and password on the linux system
+-make sure the ansible cfg file is present to disable ssh host checking
+-we are now using ansible vault, the secret file, vault password file, and ansible.cfg have to be present.
+-the secrets file and vault pass file are not uploaded to GH for security.
 
 
 
