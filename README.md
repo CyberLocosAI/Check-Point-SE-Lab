@@ -35,8 +35,12 @@ It is built to execute from any linux platform, into Azure.
 *core_azure_backbone.tf* - Creates the backbone network for each student, 1 VNet with three subnets (internal, external, and DMZ)
 *core_azure_student_VDIs.tf* - Creates one Windows VDI per student, with pre-configured software.
 *core_azure_ubuntu_docker_main.tf* - Creates one Ubuntu server per student.
+*core_azure_cpmanager.tf* - Creates one Check Point Manager per student.
+*core_azure_cpgw01.tf* - Creates one Check Point Gateway per student.
 
 *--Ansible--*
+*core_ansible_create_docker_backbone* - Installs and configures Docker on student Ubuntu machines, plus other configurations.
+
 
 *--Docker--*
 We need to make our dockerhub public!
