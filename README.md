@@ -12,7 +12,7 @@
 
 **developed by**
 
-**Raffi Ali/Massive, Hector Mora/Raven, Frank Rivas, and Travis Lockman/Antaeus**
+**Raffi Ali/Massive, Hector Mora/Raven, Frank Rivas/Franktronic, and Travis Lockman/Antaeus**
 
 **tHe fLoRiDa tEaM**
 
