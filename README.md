@@ -12,7 +12,7 @@
 
 **developed by**
 
-**Raffi Ali, Hector Mora, Frank Rivas, and Travis Lockman**
+**Raffi Ali/Massive, Hector Mora/Raven, Frank Rivas, and Travis Lockman/Antaeus**
 
 **tHe fLoRiDa tEaM**
 
@@ -22,19 +22,27 @@
 
 ## **Content**
 The lab is created with Python, Terraform, Ansible, Docker.
-It is built to execute from any linux platform, into AWS and/or Azure.
+It is built to execute from any linux platform, into Azure.
 
 *--Python--*
 
 *THE_CONTROLLER.py* - Oversees the running of all code, executes and processes output across the platform.
+*THE_DESTROYER.py* - When finished, tears down all resources built for the lab.
 
 *--Terraform--*
+
+*terraform.tfvars.example* - Remove the .example to have a properly formatted variable file for Terraform.
+*core_azure_backbone.tf* - Creates the backbone network for each student, 1 VNet with three subnets (internal, external, and DMZ)
+*core_azure_student_VDIs.tf* - Creates one Windows VDI per student, with pre-configured software.
+*core_azure_ubuntu_docker_main.tf* - Creates one Ubuntu server per student.
 
 *--Ansible--*
 
 *--Docker--*
+We need to make our dockerhub public!
 
 
+## **Prerequisites**
 
 ## **Environment Prep**
 
