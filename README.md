@@ -39,8 +39,9 @@ It is built to execute from any linux platform, into Azure.
 *core_azure_cpgw01.tf* - Creates one Check Point Gateway per student.
 
 *--Ansible--*
+
 *ansible.cfg* - Configures key options to get Ansible running to deploy the lab.
-*core_ansible_create_docker_backbone* - Installs and configures Docker on student Ubuntu machines, plus other configurations.
+*core_ansible_create_docker_backbone.yaml* - Installs and configures Docker on student Ubuntu machines, plus other configurations.
 *whale_ansible_apache_vuln.yaml* - Hacking lab, stands up the vulnerable apache server.
 *whale_ansible_ftp_server.yaml* - Hacking lab, stands up the ftp server.
 *whale_ansible_metasploitable.yaml* - Hacking lab, stands up metasploitable server.
@@ -71,14 +72,14 @@ not the id of the secret.
 
 ## **Environment Prep**
 
-### Prep your Linux SubSystem or Linux ###
--Update FIRST
+### LINUX IS REQUIRED ###
+-Ubuntu is preferred, update first.
 -install terraform
 -install ansible
 -install sshpass
 
-# Azure Ansible
--Need to install sshpass on the system running ansible when using username and password on the linux system.
+# Ansible Prep
+-You will need to install sshpass on the system running ansible when using username and password on the linux system.
 -Make sure the ansible cfg file is present to disable ssh host checking
 -We are now using ansible vault, the secret file, vault password file, and ansible.cfg have to be present.
 -the secrets file and vault pass file are not uploaded to GH for security.
