@@ -4,7 +4,9 @@
   <h2><strong>The fully IaC Check Point SE Lab</strong></h2>
 </div>
 
-
+<div align="center">
+<img src="images/locoslogo.jpg" alt="Screenshot" width="500">
+</div>
 
 **This kit contains a fully modular, scalable, and customizable IaC Cloud lab designed to be deployed in Microsoft Azure.**
 
@@ -40,7 +42,7 @@ It is built to execute from any linux platform, into Azure.
 ## **Workflow**
 
 <div align="center">
-<img src="images/locoslogo.jpg" alt="Screenshot" width="500">
+<img src="images/Lab_Diagram.jpg" alt="Screenshot" width="500">
 </div>
 
 
