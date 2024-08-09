@@ -4,9 +4,7 @@
   <h2><strong>The fully IaC Check Point SE Lab</strong></h2>
 </div>
 
-<div align="center">
-<img src="images/locoslogo.jpg" alt="Screenshot" width="500">
-</div>
+
 
 **This kit contains a fully modular, scalable, and customizable IaC Cloud lab designed to be deployed in Microsoft Azure.**
 
@@ -15,10 +13,6 @@
 **Raffi Ali/Massive, Hector Mora/Raven, Frank Rivas/Franktronic, and Travis Lockman/Antaeus**
 
 **tHe fLoRiDa tEaM**
-
-<div align="center">
-<img src="images/Lab_Diagram.jpg" alt="Screenshot" width="300">
-</div>
 
 ## **Content**
 The lab is created with Python, Terraform, Ansible, Docker.
@@ -42,11 +36,13 @@ It is built to execute from any linux platform, into Azure.
 
 *ansible.cfg* - Configures key options to get Ansible running to deploy the lab.
 *core_ansible_create_docker_backbone.yaml* - Installs and configures Docker on student Ubuntu machines, plus other configurations.
-*whale_ansible_apache_vuln.yaml* - Hacking lab, stands up the vulnerable apache server.
-*whale_ansible_ftp_server.yaml* - Hacking lab, stands up the ftp server.
-*whale_ansible_metasploitable.yaml* - Hacking lab, stands up metasploitable server.
-*whale_ansible_ubuntu_attack.yaml* - Hacking lab, stands up the attack platform.
-*whale_ansible_webgoat.yaml* - Hacking lab, stands up the webgoat server.
+
+## **Workflow**
+
+<div align="center">
+<img src="images/locoslogo.jpg" alt="Screenshot" width="500">
+</div>
+
 
 ## **Prerequisites**
 
@@ -84,6 +80,14 @@ not the id of the secret.
 -We are now using ansible vault, the secret file, vault password file, and ansible.cfg have to be present.
 -the secrets file and vault pass file are not uploaded to GH for security.
 
+## **Deployment Checklist**
+
+
+code area?:
+
+```python
+python3 THE_CONTROLLER.py
+```
 
 
 **Terraform Execution**
@@ -93,17 +97,6 @@ Inside the azure and/or aws folder:
 `terraform init`
 
 More to come...
-
-
-
-## **How To Use This Lab**
-
-More to come:
-
-```python
-python3 THE_CONTROLLER.py
-```
-
 
 ## **Acknowledgements**
 
