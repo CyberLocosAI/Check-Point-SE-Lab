@@ -8,10 +8,10 @@
 
 import subprocess
 import os
-# import boto3 for future use with AWS
 import time
 import json
 import re
+# import boto3 #Enable for AWS
 
 
 class CONTROLLER:
@@ -177,18 +177,8 @@ if __name__ == '__main__':
     # This command executes any .tf files in the same directory, be careful!
     # ct.run_command(['terraform', 'apply', '-auto-approve'])
     # ct.save_terraform_output()
-    # ct.print_vpc_details_to_file('tf_outputs.json', 'full_lab_info_aws.txt')
     
     ### Ansible
-    # ct.create_ansible_hosts_file_for_ubuntu(
-    #                 json_output_file='tf_outputs.json',  # Path to the Terraform output JSON file
-    #                 hosts_file='hosts.ini',  # Output Ansible hosts file
-    #                 ssh_key_file='fllabmainkey.pem',  # Path to your SSH private key
-    #                 ansible_user='ubuntu'  # Ansible username
-    #                                         )
-    # print(f'\n\nPausing for 5 minutes to allow for initalization...\n\n')
-    # time.sleep(300)
-    # ct.run_command(['ansible-playbook', '-i', 'hosts.ini', 'install_docker.yaml'])
     
     # This is the last command for AWS, it exits the directory.
     #os.chdir(os.path.join(os.getcwd(), os.pardir))
