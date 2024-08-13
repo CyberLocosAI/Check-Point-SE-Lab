@@ -178,7 +178,7 @@ ubuntu_monster_vm_size = "Standard_D2s_v3"
 
 ## Support
 
-For any issues or questions, please open an issue in the GitHub repository. Note that some files in this project are custom and involve external services like Docker Hub and personal accounts. As such, users will need to set up their own Docker Hub accounts and configure other necessary tools independently, as these are not supported by the project.
+For any issues or questions, please open an issue in the GitHub repository. Note that some files in the /custom/ folder are custom and involve external services like Docker Hub and personal accounts. As such, users will need to set up their own Docker Hub accounts and configure other necessary tools independently, as these are not supported by the project.
 
 ## **Workflow**
 
