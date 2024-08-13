@@ -16,28 +16,61 @@
 
 **tHe fLoRiDa tEaM**
 
-## **Content**
-The lab is created with Python, Terraform, Ansible, Docker.
-It is built to execute from any linux platform, into Azure.
+# Lab Environment Overview
 
-*--Python--*
+This lab environment is designed to be executed from any Linux platform and deploys resources into Microsoft Azure. It utilizes Python, Terraform, Ansible, and Docker to automate the creation and management of the lab infrastructure.
 
-*THE_CONTROLLER.py* - Oversees the running of all code, executes and processes output across the platform.
-*THE_DESTROYER.py* - When finished, tears down all resources built for the lab.
+## Components
 
-*--Terraform--*
+### Python
+- **`THE_CONTROLLER.py`**  
+  Oversees the execution of all code, manages processes, and handles output across the platform.
 
-*terraform.tfvars.example* - Remove the .example to have a properly formatted variable file for Terraform.
-*core_azure_backbone.tf* - Creates the backbone network for each student, 1 VNet with three subnets (internal, external, and DMZ)
-*core_azure_student_VDIs.tf* - Creates one Windows VDI per student, with pre-configured software.
-*core_azure_ubuntu_docker_main.tf* - Creates one Ubuntu server per student.
-*core_azure_cpmanager.tf* - Creates one Check Point Manager per student.
-*core_azure_cpgw01.tf* - Creates one Check Point Gateway per student.
+- **`THE_DESTROYER.py`**  
+  Destroys all resources built for the lab after the work is complete.
 
-*--Ansible--*
+### Terraform
+- **`terraform.tfvars.example`**  
+  Template for Terraform variables. Remove the `.example` extension to use it as the variable file for Terraform.
 
-*ansible.cfg* - Configures key options to get Ansible running to deploy the lab.
-*core_ansible_create_docker_backbone.yaml* - Installs and configures Docker on student Ubuntu machines, plus other configurations.
+- **`core_azure_backbone.tf`**  
+  Creates the backbone network for each student, consisting of one VNet with three subnets: internal, external, and DMZ.
+
+- **`core_azure_student_VDIs.tf`**  
+  Provisions one Windows VDI per student, pre-configured with necessary software.
+
+- **`core_azure_ubuntu_docker_main.tf`**  
+  Creates one Ubuntu server per student.
+
+- **`core_azure_cpmanager.tf`**  
+  Deploys one Check Point Manager per student.
+
+- **`core_azure_cpgw01.tf`**  
+  Creates one Check Point Gateway per student.
+
+### Ansible
+- **`ansible.cfg`**  
+  Configures key options required to run Ansible for deploying the lab environment.
+
+- **`core_ansible_create_docker_backbone.yaml`**  
+  Installs and configures Docker on student Ubuntu machines, along with additional configurations.
+
+## Prerequisites
+
+Ensure that you have the following installed on your Linux machine:
+
+- Python
+- Terraform
+- Ansible
+- Docker
+
+## Getting Started
+
+1. Clone the repository to your local machine.
+2. Rename `terraform.tfvars.example` to `terraform.tfvars` and customize it with your environment details.
+3. Run `THE_CONTROLLER.py` to start the lab environment setup.
+4. Once you are done, execute `THE_DESTROYER.py` to clean up all resources.
+
 
 # **Azure Deployment Steps**
 
