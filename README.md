@@ -55,6 +55,31 @@ This lab environment is designed to be executed from any Linux platform and depl
 - **`core_ansible_create_docker_backbone.yaml`**  
   Installs and configures Docker on student Ubuntu machines, along with additional configurations.
 
+  **`cp-se-lab-ansible-secrets.yaml`**  
+  NOT INCLUDED IN REPO - Ansible secrets must be configured using this filename for deployment to work.
+
+  **`cp-se-lab-vault-pass.txt`**  
+  NOT INCLUDED IN REPO - This text file will store your vault password locally.  Must be named exact to above for deployment to work.
+
+## **Deployment summary**
+1. Ready your Linux environment, Ubuntu is preferred, follow instructions below. 
+2. Ready your Azure environment, see below for walkthrough.
+3. Ready your local Ansible secrets vault and vault file.
+Clone the repository to your local machine.
+```bash
+ansible-vault create cp-se-lab-ansible-secrets.yaml
+```
+4. Rename `terraform.tfvars.example` to `terraform.tfvars` and customize it with your environments details and secrets.
+5. Run `THE_CONTROLLER.py`to start the lab environment setup.
+```python
+python3 THE_CONTROLLER.py
+```
+6. Once finished, execute `THE_DESTROYER.py` to clean up all resources.
+```python
+python3 THE_DESTROYER.py
+```
+# Lab Environment Setup
+
 ## Prerequisites
 
 Ensure that you have the following installed on your Linux machine:
@@ -62,15 +87,23 @@ Ensure that you have the following installed on your Linux machine:
 - Python
 - Terraform
 - Ansible
-- Docker
+- sshpass
 
-## Getting Started
+## Environment Preparation
 
-1. Clone the repository to your local machine.
-2. Rename `terraform.tfvars.example` to `terraform.tfvars` and customize it with your environment details.
-3. Run `THE_CONTROLLER.py` to start the lab environment setup.
-4. Once you are done, execute `THE_DESTROYER.py` to clean up all resources.
+### Linux Requirements
+- **Ubuntu is preferred**: Make sure your system is updated before proceeding.
+- **Install the following tools**:
+  - Terraform
+  - Ansible
+  - sshpass
 
+### Ansible Preparation
+- **sshpass Installation**: Required for running Ansible with username and password on the Linux system.
+- **Configuration**: Ensure the `ansible.cfg` file is present to disable SSH host key checking.
+- **Ansible Vault**: We are now using Ansible Vault for securing sensitive information.
+  - Ensure the secrets file, vault password file, and `ansible.cfg` are present.
+  - **Note**: The secrets file and vault password file are not uploaded to GitHub for security reasons.
 
 # **Azure Deployment Steps**
 
@@ -186,72 +219,3 @@ For any issues or questions, please open an issue in the GitHub repository.
 <div align="center">
 <img src="images/Lab_Diagram.jpg" alt="Screenshot" width="500">
 </div>
-
-
-## **Prerequisites**
-
-### Azure ###
-
-1. Create an application for terraform in Entra.
-2. Assign the service principal of your application to the contributor role.
-
-3. Update the tfvars file with your account info and application info. 
-Please note the client secret is the VALUE of the secret 
-not the id of the secret.
-
-4. Accept license agreements using azure cli with these commands
--az login
--az vm image terms accept --urn checkpoint:check-point-cg-r8120:mgmt-byol:latest
--az vm image terms accept --urn checkpoint:check-point-cg-r8120:sg-byol:latest
-
-5. Increase vCPU quota. (Need to be off trial)
-
-6. Increase public IP quota. (Need to be off trial)
-
-
-
-## **Environment Prep**
-
-### LINUX IS REQUIRED ###
--Ubuntu is preferred, update first.
--install terraform
--install ansible
--install sshpass
-
-# Ansible Prep
--You will need to install sshpass on the system running ansible when using username and password on the linux system.
--Make sure the ansible cfg file is present to disable ssh host checking
--We are now using ansible vault, the secret file, vault password file, and ansible.cfg have to be present.
--the secrets file and vault pass file are not uploaded to GH for security.
-
-## **Deployment Checklist**
-
-1. Create an application for terraform in Entra.
-2. Assign the service principal of your application to the contributor role.
-
-3. Update the tfvars file with your account info and application info. 
-Please note the client secret is the VALUE of the secret 
-not the id of the secret.
-
-4. Accept license agreements using azure cli with these commands
--az login
--az vm image terms accept --urn checkpoint:check-point-cg-r8120:mgmt-byol:latest
--az vm image terms accept --urn checkpoint:check-point-cg-r8120:sg-byol:latest
-
-5. Increase vCPU quota. (Need to be off trial)
-
-6. Increase public IP quota. (Need to be off trial)
-
-
-**Terraform Execution**
-
-Inside the azure and/or aws folder:
-
-`terraform init`
-
-More to come...
-
-## **Acknowledgements**
-
-Kobe Bryant, and more to come.
-But did you destroy....?
