@@ -25,6 +25,20 @@ It is built to execute from any linux platform, into Azure.
 *THE_CONTROLLER.py* - Oversees the running of all code, executes and processes output across the platform.
 *THE_DESTROYER.py* - When finished, tears down all resources built for the lab.
 
+*--Terraform--*
+
+*terraform.tfvars.example* - Remove the .example to have a properly formatted variable file for Terraform.
+*core_azure_backbone.tf* - Creates the backbone network for each student, 1 VNet with three subnets (internal, external, and DMZ)
+*core_azure_student_VDIs.tf* - Creates one Windows VDI per student, with pre-configured software.
+*core_azure_ubuntu_docker_main.tf* - Creates one Ubuntu server per student.
+*core_azure_cpmanager.tf* - Creates one Check Point Manager per student.
+*core_azure_cpgw01.tf* - Creates one Check Point Gateway per student.
+
+*--Ansible--*
+
+*ansible.cfg* - Configures key options to get Ansible running to deploy the lab.
+*core_ansible_create_docker_backbone.yaml* - Installs and configures Docker on student Ubuntu machines, plus other configurations.
+
 # **Azure Deployment Steps**
 
 ## **1. Create an Application in Entra for Terraform**
@@ -64,12 +78,6 @@ It is built to execute from any linux platform, into Azure.
 - Similarly, check and increase the **Public IP quota** to meet the deployment requirements.
 
 ---
-
-### **Note:**
-- I will add more detailed instructions for the quota sections in a future update.
-
-
-*--Terraform--*
 
 # Azure Check Point Deployment
 
@@ -140,11 +148,6 @@ ubuntu_monster_vm_size = "Standard_D2s_v3"
 
 For any issues or questions, please open an issue in the GitHub repository.
 
-*--Ansible--*
-
-*ansible.cfg* - Configures key options to get Ansible running to deploy the lab.
-*core_ansible_create_docker_backbone.yaml* - Installs and configures Docker on student Ubuntu machines, plus other configurations.
-
 ## **Workflow**
 
 <div align="center">
@@ -190,12 +193,21 @@ not the id of the secret.
 
 ## **Deployment Checklist**
 
+1. Create an application for terraform in Entra.
+2. Assign the service principal of your application to the contributor role.
 
-code area?:
+3. Update the tfvars file with your account info and application info. 
+Please note the client secret is the VALUE of the secret 
+not the id of the secret.
 
-```python
-python3 THE_CONTROLLER.py
-```
+4. Accept license agreements using azure cli with these commands
+-az login
+-az vm image terms accept --urn checkpoint:check-point-cg-r8120:mgmt-byol:latest
+-az vm image terms accept --urn checkpoint:check-point-cg-r8120:sg-byol:latest
+
+5. Increase vCPU quota. (Need to be off trial)
+
+6. Increase public IP quota. (Need to be off trial)
 
 
 **Terraform Execution**
