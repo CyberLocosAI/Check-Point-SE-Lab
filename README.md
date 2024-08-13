@@ -104,12 +104,11 @@ Ensure that you have the following installed on your Linux machine:
 
 ## **5. Increase vCPU Quota**
 
-- Ensure your subscription has enough **vCPU quota** for the deployment. If necessary, request an increase via the Azure Portal.
+Ensure your subscription has enough **vCPU quota** and **Public IP quota** for the deployment. To check your current vCPU quota, you can use the following Azure CLI command:
 
-## **6. Increase Public IP Quota**
-
-- Similarly, check and increase the **Public IP quota** to meet the deployment requirements.
-
+```bash
+az vm list-usage --location <your-region> --output table
+```
 ---
 
 # Azure Check Point Deployment
@@ -179,7 +178,7 @@ ubuntu_monster_vm_size = "Standard_D2s_v3"
 
 ## Support
 
-For any issues or questions, please open an issue in the GitHub repository.
+For any issues or questions, please open an issue in the GitHub repository. Note that some files in this project are custom and involve external services like Docker Hub and personal accounts. As such, users will need to set up their own Docker Hub accounts and configure other necessary tools independently, as these are not supported by the project.
 
 ## **Workflow**
 
