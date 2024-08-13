@@ -94,12 +94,12 @@ Ensure that you have the following installed on your Linux machine:
 
 ## **4. Accept License Agreements Using Azure CLI**
 
-- Use the following commands to accept the required license agreements:
+- Use the following commands to accept the required Check Point license agreements:
 
     ```bash
     az login
-    az vm image terms accept --urn checkpoint:check-point-cg-r8120:mgmt-byol:latest
-    az vm image terms accept --urn checkpoint:check-point-cg-r8120:sg-byol:latest
+    az vm image terms accept --urn checkpoint:check-point-cg-r8120:mgmt-byol:latest (Manager)
+    az vm image terms accept --urn checkpoint:check-point-cg-r8120:sg-byol:latest   (Gateway)
     ```
 
 ## **5. Increase vCPU Quota**
