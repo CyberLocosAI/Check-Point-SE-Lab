@@ -65,16 +65,18 @@ This lab environment is designed to be executed from any Linux platform and depl
 1. Ready your Linux environment, Ubuntu is preferred, follow instructions below. 
 2. Ready your Azure environment, see below for walkthrough.
 3. Ready your local Ansible secrets vault and vault file.
-Clone the repository to your local machine.
+
 ```bash
 ansible-vault create cp-se-lab-ansible-secrets.yaml
 ```
-4. Rename `terraform.tfvars.example` to `terraform.tfvars` and customize it with your environments details and secrets.
-5. Run `THE_CONTROLLER.py`to start the lab environment setup.
+4. Clone this repository to your local machine.
+5. Rename `terraform.tfvars.example` to `terraform.tfvars` and customize it with your environments details and secrets.
+6. Turn on different features and enable your customizations through commenting/uncommenting or adding lines below the magic main portion of 'THE_CONTROLLER.py'
+7. Run `THE_CONTROLLER.py`to start the lab environment setup.
 ```python
 python3 THE_CONTROLLER.py
 ```
-6. Once finished, execute `THE_DESTROYER.py` to clean up all resources.
+8. Once finished, execute `THE_DESTROYER.py` to clean up all resources.
 ```python
 python3 THE_DESTROYER.py
 ```
