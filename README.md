@@ -5,16 +5,20 @@
 </div>
 
 <div align="center">
-<img src="images/locoslogo.jpg" alt="Screenshot" width="500">
+<img src="images/locogator.jpeg" alt="Screenshot" width="500">
 </div>
 
-**This kit contains a fully modular, scalable, and customizable IaC Cloud lab designed to be deployed in Microsoft Azure.**
+<div style="text-align: center; font-size: 2em;">
+    This kit contains a fully modular, scalable, and customizable IaC Cloud lab designed to be deployed in Microsoft Azure.
 
-**developed by**
+    developed by
 
-**Raffi Ali/Massive, Hector Mora/Raven, Frank Rivas/Franktronic, and Travis Lockman/Antaeus**
+    Raffi Ali/Massive, Hector Mora/Raven, Frank Rivas/Franktronic, and Travis Lockman/Antaeus
 
-**tHe fLoRiDa tEaM**
+    tHe fLoRiDa lOcoS
+</div>
+
+
 
 # Lab Environment Overview
 
