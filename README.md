@@ -33,6 +33,9 @@ This lab environment is designed to be executed from any Linux platform and depl
 - **`terraform.tfvars.example`**  
   Template for Terraform variables. Remove the `.example` extension to use it as the variable file for Terraform.
 
+- **`variables.tf`**  
+  Do not modify this file! It contains the variable declaration and definition for the whole Terraform infrastructure.  You may add additional variables at the bottom without breaking the lab.
+
 - **`core_azure_backbone.tf`**  
   Creates the backbone network for each student, consisting of one VNet with three subnets: internal, external, and DMZ.
 
@@ -61,11 +64,13 @@ This lab environment is designed to be executed from any Linux platform and depl
   **`cp-se-lab-vault-pass.txt`**  
   NOT INCLUDED IN REPO - This text file will store your vault password locally.  Must be named exact to above for deployment to work.
 
+### Custom Folder
+- This folder contains our customizations for the lab, and the files within are not supported on this project.  Anything you place in this folder will be automatically copied into your project folder.
+
 ## **Deployment summary**
 1. Ready your Linux environment, Ubuntu is preferred, follow instructions below. 
 2. Ready your Azure environment, see below for walkthrough.
 3. Ready your local Ansible secrets vault and vault file.
-
 ```bash
 ansible-vault create cp-se-lab-ansible-secrets.yaml
 ```
@@ -179,7 +184,7 @@ The deployment is configured using a `terraform.tfvars` file. Here's an explanat
 3. Edit `terraform.tfvars` and fill in your specific values.
 4. Run `terraform init` to initialize the Terraform working directory.
 5. Run `terraform plan` to see the planned changes.
-6. Run `terraform apply` to create the resources.
+6. Go up one directory and run the THE_CONTROLLER.py.
 
 ## Example Configuration
 
