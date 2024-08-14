@@ -188,7 +188,10 @@ if __name__ == '__main__':
     ##############################################################################################
     # Telling Python to enter the azure directory
     os.chdir('./azure')
-    
+
+    # Copying any customizations into the main azure directory
+    ct.run_command(['cp', '-r', '../custom/.', './'])
+
     ## Terraform
     ct.run_command(['terraform', 'apply', '-auto-approve'])
     print(f'\n\nPausing for 3 minutes to allow for initalization...\n\n')
