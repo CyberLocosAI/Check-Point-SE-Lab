@@ -189,8 +189,13 @@ if __name__ == '__main__':
     # Telling Python to enter the azure directory
     os.chdir('./azure')
 
-    # Copying any customizations into the main azure directory
-    ct.run_command(['cp', '-r', '../custom/.', './'])
+    # Check if 'custom_copied.txt' exists
+    if not os.path.exists('custom_copied.txt'):
+        # Copy the contents of the 'custom' folder into the 'azure' directory using Linux commands
+        ct.run_command(['cp', '-r', '../custom/.', './'])
+        # Create 'custom_copied.txt' to mark that the custom folder has been copied
+        with open('custom_copied.txt', 'w') as f:
+            f.write('Custom folder contents copied.')
 
     ## Terraform
     ct.run_command(['terraform', 'apply', '-auto-approve'])
