@@ -1,3 +1,13 @@
+<# DESCRIPTION
+The script performs the following actions:
+1. Creates the "C:\CP" and "C:\Hold" directories if they do not already exist.
+2. Downloads custom wallpaper images and a PowerShell script into the "C:\Hold" directory.
+3. Downloads the Check Point SmartConsole installer and MobaXterm executable into the "C:\CP" directory.
+4. Creates a URL shortcut in the "C:\CP" directory pointing to the Check Point website.
+5. Configures a scheduled task to copy all files from the "C:\CP" directory to the desktop of the "cpuser" account upon logon.
+6. Configures a scheduled task to run the `random-wallpapers.ps1` script at logon, which likely sets a random desktop wallpaper for the "cpuser" account.
+#>
+
 # Define the CP folder path on the C: drive
 $CPFolderPath = "C:\CP"
 
