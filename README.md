@@ -1,7 +1,12 @@
 ## check-point-se-lab
 
+<div align="center" style="font-size: 1.75em;">
+  <h1><strong>The IaC Check Point SE Lab</strong></h1>
+</div>
+
+
 <div align="center">
-  <h2><strong>The fully IaC Check Point SE Lab</strong></h2>
+<img src="images/cplogo.png" alt="Screenshot" width="500">
 </div>
 
 <div align="center">
