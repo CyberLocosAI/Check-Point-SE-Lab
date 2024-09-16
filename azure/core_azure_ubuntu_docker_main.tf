@@ -13,7 +13,10 @@ resource "azurerm_public_ip" "ubuntu_docker_main_public_ip" {
   name                = "ubuntu-docker-main-public-ip-${count.index}"
   location            = azurerm_resource_group.FL-SE-AZURE.location
   resource_group_name = azurerm_resource_group.FL-SE-AZURE.name
-  allocation_method   = "Dynamic"
+  #allocation_method   = "Dynamic"
+  allocation_method   = "Static"  # Change from "Dynamic" to "Static"
+  sku                 = "Standard"  # Explicitly define the SKU as "Standard" for the IP address
+
 }
 
 resource "azurerm_network_interface" "ubuntu_docker_main_nic" {

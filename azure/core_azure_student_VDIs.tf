@@ -4,7 +4,10 @@ resource "azurerm_public_ip" "student_vdi_ip" {
   name                = "student-vdi-ip-${count.index}"
   resource_group_name = azurerm_resource_group.FL-SE-AZURE.name
   location            = azurerm_resource_group.FL-SE-AZURE.location
-  allocation_method   = "Dynamic"
+  #allocation_method   = "Dynamic"
+  allocation_method   = "Static"  # Change from "Dynamic" to "Static"
+  sku                 = "Standard"  # Explicitly define the SKU as "Standard" for the IP address
+
 }
 
 # Network Interfaces for VMs

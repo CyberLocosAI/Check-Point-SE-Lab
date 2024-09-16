@@ -1,7 +1,7 @@
 provider "azurerm" {
   features {}
 
-  skip_provider_registration = true #skipping this as a last resort
+  #skip_provider_registration = true #skipping this as a last resort
 
   subscription_id = var.subscription_id
   client_id       = var.client_id
