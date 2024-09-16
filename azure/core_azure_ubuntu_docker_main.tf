@@ -13,10 +13,27 @@ resource "azurerm_public_ip" "ubuntu_docker_main_public_ip" {
   name                = "ubuntu-docker-main-public-ip-${count.index}"
   location            = azurerm_resource_group.FL-SE-AZURE.location
   resource_group_name = azurerm_resource_group.FL-SE-AZURE.name
-  #allocation_method   = "Dynamic"
   allocation_method   = "Static"  # Change from "Dynamic" to "Static"
   sku                 = "Standard"  # Explicitly define the SKU as "Standard" for the IP address
+}
 
+resource "azurerm_network_security_group" "ubuntu_docker_main_nsg" {
+  count               = var.resource_count
+  name                = "ubuntu-docker-main-nsg-${count.index}"
+  location            = azurerm_resource_group.FL-SE-AZURE.location
+  resource_group_name = azurerm_resource_group.FL-SE-AZURE.name
+
+  security_rule {
+    name                       = "Allow-SSH"
+    priority                   = 1000
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
 }
 
 resource "azurerm_network_interface" "ubuntu_docker_main_nic" {
@@ -31,6 +48,13 @@ resource "azurerm_network_interface" "ubuntu_docker_main_nic" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.ubuntu_docker_main_public_ip[count.index].id
   }
+}
+
+# New resource to associate NSG with NIC
+resource "azurerm_network_interface_security_group_association" "ubuntu_docker_main_nic_nsg" {
+  count                     = var.resource_count
+  network_interface_id       = azurerm_network_interface.ubuntu_docker_main_nic[count.index].id
+  network_security_group_id  = azurerm_network_security_group.ubuntu_docker_main_nsg[count.index].id
 }
 
 resource "azurerm_linux_virtual_machine" "ubuntu_docker_main" {
