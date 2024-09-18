@@ -63,7 +63,6 @@ resource "azurerm_network_security_group" "student_nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "*"
-    #source_address_prefixes    = ["99.35.11.235", "69.237.12.59", "73.85.178.251"]
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
