@@ -8,6 +8,7 @@ variable "ubuntu_image" {
   }
 }
 
+# Public IP Addresses for Ubuntu Docker Main VMs
 resource "azurerm_public_ip" "ubuntu_docker_main_public_ip" {
   count               = var.resource_count
   name                = "ubuntu-docker-main-public-ip-${count.index}"
@@ -15,8 +16,13 @@ resource "azurerm_public_ip" "ubuntu_docker_main_public_ip" {
   resource_group_name = azurerm_resource_group.FL-SE-AZURE.name
   allocation_method   = "Static"  # Change from "Dynamic" to "Static"
   sku                 = "Standard"  # Explicitly define the SKU as "Standard" for the IP address
+
+  timeouts {
+    create = "5m"  # Allow time for static IP creation
+  }
 }
 
+# Network Security Group for Ubuntu Docker Main VMs
 resource "azurerm_network_security_group" "ubuntu_docker_main_nsg" {
   count               = var.resource_count
   name                = "ubuntu-docker-main-nsg-${count.index}"
@@ -34,8 +40,13 @@ resource "azurerm_network_security_group" "ubuntu_docker_main_nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+
+  timeouts {
+    create = "5m"  # Add timeout for NSG creation
+  }
 }
 
+# Network Interfaces for Ubuntu Docker Main VMs
 resource "azurerm_network_interface" "ubuntu_docker_main_nic" {
   count               = var.resource_count
   name                = "ubuntu-docker-main-nic-${count.index}"
@@ -48,15 +59,22 @@ resource "azurerm_network_interface" "ubuntu_docker_main_nic" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.ubuntu_docker_main_public_ip[count.index].id
   }
+
+  depends_on = [azurerm_public_ip.ubuntu_docker_main_public_ip]  # Ensure Public IP is ready
 }
 
-# New resource to associate NSG with NIC
+# Associate NSG with the Network Interface
 resource "azurerm_network_interface_security_group_association" "ubuntu_docker_main_nic_nsg" {
   count                     = var.resource_count
   network_interface_id       = azurerm_network_interface.ubuntu_docker_main_nic[count.index].id
   network_security_group_id  = azurerm_network_security_group.ubuntu_docker_main_nsg[count.index].id
+
+  depends_on = [
+    azurerm_network_security_group.ubuntu_docker_main_nsg  # Ensure NSG is created before association
+  ]
 }
 
+# Ubuntu Docker Main Linux Virtual Machines
 resource "azurerm_linux_virtual_machine" "ubuntu_docker_main" {
   count                           = var.resource_count
   name                            = "ubuntu-docker-main-${count.index + 1}"
@@ -79,8 +97,18 @@ resource "azurerm_linux_virtual_machine" "ubuntu_docker_main" {
     sku       = var.ubuntu_image.sku
     version   = var.ubuntu_image.version
   }
+
+  depends_on = [
+    azurerm_network_interface.ubuntu_docker_main_nic,  # Ensure NIC is created
+    azurerm_network_interface_security_group_association.ubuntu_docker_main_nic_nsg  # Ensure NSG association
+  ]
+
+  timeouts {
+    create = "30m"  # Allow more time for VM creation with networking dependencies
+  }
 }
 
+# Output the Public and Private IP Addresses of the Ubuntu Docker Main VMs
 output "ubuntu_docker_main_ips" {
   value = {
     for idx in range(var.resource_count) :
