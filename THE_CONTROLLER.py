@@ -85,8 +85,8 @@ class CONTROLLER:
             
         # Extract Ubuntu Docker main public IPs
         ubuntu_ips = []
-        ubuntu_docker_main_ips = data.get('ubuntu_docker_main_ips', {}).get('value', {})
-        for key, ip_details in ubuntu_docker_main_ips.items():
+    _main_ips = data.get(_main_ips', {}).get('value', {})
+        for key, ip_details in_main_ips.items():
             if "public_ip" in ip_details:
                 ubuntu_ips.append(ip_details['public_ip'])
                 
@@ -114,7 +114,7 @@ class CONTROLLER:
         # Write to the hosts file
         with open(hosts_file, 'w') as file:
             # Ubuntu Docker Main Machines Section
-            file.write("[ubuntu_docker_main_machines]\n")
+            file.write("_main_machines]\n")
             for idx, ip in enumerate(ubuntu_ips):
                 file.write(f"server{idx+1} ansible_host={ip} "
                            f"ansible_user={ansible_user} "
@@ -164,7 +164,7 @@ class CONTROLLER:
                 student_vdi_ip = student['Public_IP']
                 
                 # Assuming there is a corresponding ubuntu machine entry for each student
-                ubuntu_private_ip = data['ubuntu_docker_main_ips']['value'].get(f'ubuntu-docker-main-{student_index + 1}', {}).get('private_ip', 'N/A')
+                ubuntu_private_ip = data[_main_ips']['value'].get(f'ubuntu-docker-main-{student_index + 1}', {}).get('private_ip', 'N/A')
                 
                 subnets = data['vpc_subnet_details']['value']['FL-SE-AZURE-vnet-1']['subnets']
                 external_subnet = ', '.join(subnets['external'][0])
@@ -232,17 +232,17 @@ if __name__ == '__main__':
     ## Ansible
     ct.azure_create_ansible_hosts_file(
                     json_output_file='tf_outputs.json',  # Path to the Terraform output JSON file
-                    hosts_file='core_ubuntu_docker_machines.ini',  # Output Ansible hosts file
+                    hosts_file='core_machines.ini',  # Output Ansible hosts file
                     ansible_user='instructor',  # Username to login.
                     tfvars_file='terraform.tfvars'  # Terraform tfvars
                                             )
         ### Playbooks for Ubuntu Server
-    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'core_ansible_create_docker_backbone.yaml'])
-    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_ubuntu_attack.yaml'])
-    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_apache_vuln.yaml'])
-    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_webgoat.yaml'])
-    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_metasploitable.yaml'])
-    ct.run_command(['ansible-playbook', '-i', 'core_ubuntu_docker_machines.ini', 'whale_ansible_ftp_server.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'core_ansible_create_docker_backbone.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_ubuntu_attack.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_apache_vuln.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_webgoat.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_metasploitable.yaml'])
+    ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_ftp_server.yaml'])
     
         ### Playbooks for Check Point Manager
 
