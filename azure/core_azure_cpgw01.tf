@@ -104,3 +104,14 @@ resource "azurerm_linux_virtual_machine" "checkpoint_fw" {
     create = "30m"  # Allow more time for VM creation, especially with static IP and NSG dependencies
   }
 }
+
+# Output block
+output "checkpoint_gateway_details" {
+  description = "Details of the Check Point gateway VMs including public IPs, private IPs, subnets, and hostnames"
+  value = {
+    public_ips  = azurerm_public_ip.checkpoint_gateway_public_ip[*].ip_address
+    private_ips = azurerm_network_interface.checkpoint_gateway_nic[*].private_ip_address
+    subnets     = azurerm_subnet.external[*].id
+    hostnames   = azurerm_linux_virtual_machine.checkpoint_fw[*].name
+  }
+}
