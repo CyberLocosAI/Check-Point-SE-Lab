@@ -134,42 +134,108 @@ class CONTROLLER:
                            f"ansible_user={cp_ansible_user} "
                            f"ansible_ssh_pass={admin_password}\n")
     
+    def azure_create_ansible_hosts_file(self, json_output_file, hosts_file, ubuntu_ansible_user, cp_ansible_user, tfvars_file):
+        # Read the JSON output file
+        with open(json_output_file, 'r') as file:
+            data = json.load(file)
+            
+        # Extract Ubuntu Docker main public IPs
+        ubuntu_ips = []
+        ubuntu_docker_main_ips = data.get('ubuntu_docker_main_ips', {}).get('value', {})
+        for key, ip_details in ubuntu_docker_main_ips.items():
+            if "public_ip" in ip_details:
+                ubuntu_ips.append(ip_details['public_ip'])
+                
+        # Extract Checkpoint Firewall public IPs
+        checkpoint_fw_ips = data.get('checkpoint_gateway_details', {}).get('value', {}).get('public_ips', [])
+        
+        # Extract Checkpoint Management public IPs
+        checkpoint_mgmt_ips = data.get('checkpoint_mgmt_details', {}).get('value', {}).get('public_ip_addresses', [])
+        
+        # Read the tfvars file to get the admin_password
+        admin_password = None
+        with open(tfvars_file, 'r') as file:
+            for line in file:
+                # Check if line contains the admin_password variable
+                match = re.match(r'^admin_password\s*=\s*"(.*)"$', line)
+                if match:
+                    admin_password = match.group(1)
+                    break
+                
+        # Exit if admin_password is not found
+        if admin_password is None:
+            print("admin_password not found in tfvars file.")
+            return
+        
+        # Write to the hosts file
+        with open(hosts_file, 'w') as file:
+            # Ubuntu Docker Main Machines Section
+            file.write("[ubuntu_docker_main_machines]\n")
+            for idx, ip in enumerate(ubuntu_ips):
+                file.write(f"server{idx+1} ansible_host={ip} "
+                           f"ansible_user={ubuntu_ansible_user} "
+                           f"ansible_ssh_pass={admin_password}\n")
+                
+            # Checkpoint Firewall Section
+            file.write("\n[checkpoint_gateway_details]\n")
+            for idx, ip in enumerate(checkpoint_fw_ips):
+                file.write(f"fw{idx+1} ansible_host={ip} "
+                           f"ansible_user={cp_ansible_user} "
+                           f"ansible_ssh_pass={admin_password}\n")
+                
+            # Checkpoint Management Section
+            file.write("\n[checkpoint_mgmt_details]\n")
+            for idx, ip in enumerate(checkpoint_mgmt_ips):
+                file.write(f"mgmt{idx+1} ansible_host={ip} "
+                           f"ansible_user={cp_ansible_user} "
+                           f"ansible_ssh_pass={admin_password}\n")
+    
     def process_terraform_data(self, filename, output_filename):
         with open(filename, 'r') as file:
             data = json.load(file)
-    
+
         # NATO phonetic alphabet (covers up to 78 students)
-        phonetic_alphabet = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", 
-                             "India", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa", 
-                             "Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey", 
-                             "X-ray", "Yankee", "Zulu", "Antonio", "Barcelona", "Carmen", "Domingo", "Enrique", "Francia",
-                             "Granada", "Historia", "Inés", "José", "Kilo", "Lorenzo",
-                             "Madrid", "Navidad", "Ñoño", "Otoño", "París", "Querétaro",
-                             "Ramón", "Santiago", "Teresa", "Ulises", "Valencia", "Washington",
-                             "Xilófono", "Yolanda", "Zaragoza", "Anatole", "Berthe", "Célestin", "Désiré", "Eugène", "François",
-                             "Gaston", "Henri", "Irma", "Joseph", "Kléber", "Louis",
-                             "Marcel", "Nicolas", "Oscar", "Pierre", "Quentin", "Raoul",
-                             "Suzanne", "Thérèse", "Ursule", "Victor", "William", "Xavier",
-                             "Yvonne", "Zoé"]
+        phonetic_alphabet = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel",
+                            "India", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa",
+                            "Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey",
+                            "X-ray", "Yankee", "Zulu", "Antonio", "Barcelona", "Carmen", "Domingo", "Enrique", "Francia",
+                            "Granada", "Historia", "Inés", "José", "Kilo", "Lorenzo",
+                            "Madrid", "Navidad", "Ñoño", "Otoño", "París", "Querétaro",
+                            "Ramón", "Santiago", "Teresa", "Ulises", "Valencia", "Washington",
+                            "Xilófono", "Yolanda", "Zaragoza", "Anatole", "Berthe", "Célestin", "Désiré", "Eugène", "François",
+                            "Gaston", "Henri", "Irma", "Joseph", "Kléber", "Louis",
+                            "Marcel", "Nicolas", "Oscar", "Pierre", "Quentin", "Raoul",
+                            "Suzanne", "Thérèse", "Ursule", "Victor", "William", "Xavier",
+                            "Yvonne", "Zoé"]
+
         content = ""
+
         # Loop through the student VDI details
         for key, student in data['student_vdi_details']['value'].items():
             if key.startswith('student-vdi-'):
                 # Extract the student number from the key and convert it to an index
                 student_index = int(key.split('-')[-1]) - 1  # assuming student-vdi-1 corresponds to index 0
-                
+
                 # Use the phonetic alphabet for naming, default to numeric if out of range
                 student_name = phonetic_alphabet[student_index] if student_index < len(phonetic_alphabet) else f"Student {student_index + 1}"
-                
+
                 student_vdi_ip = student['Public_IP']
-                
-                # Assuming there is a corresponding ubuntu machine entry for each student
+
+                # Fetch Ubuntu machine details
                 ubuntu_private_ip = data['ubuntu_docker_main_ips']['value'].get(f'ubuntu-docker-main-{student_index + 1}', {}).get('private_ip', 'N/A')
-                
-                subnets = data['vpc_subnet_details']['value']['FL-SE-AZURE-vnet-1']['subnets']
-                external_subnet = ', '.join(subnets['external'][0])
-                internal_subnet = ', '.join(subnets['internal'][0])
-                dmz_subnet = ', '.join(subnets['dmz'][0])
+
+                # Fetch CP Manager and CP Gateway details for each student if they exist
+                cp_manager_public_ip = data['checkpoint_mgmt_details']['value']['public_ip_addresses'][student_index] if student_index < len(data['checkpoint_mgmt_details']['value']['public_ip_addresses']) else 'N/A'
+                cp_manager_private_ip = data['checkpoint_mgmt_details']['value']['private_ip_addresses'][student_index] if student_index < len(data['checkpoint_mgmt_details']['value']['private_ip_addresses']) else 'N/A'
+
+                cp_gateway_public_ip = data['checkpoint_gateway_details']['value']['public_ips'][student_index] if student_index < len(data['checkpoint_gateway_details']['value']['public_ips']) else 'N/A'
+                cp_gateway_private_ip = data['checkpoint_gateway_details']['value']['private_ips'][student_index] if student_index < len(data['checkpoint_gateway_details']['value']['private_ips']) else 'N/A'
+
+                # Fetch subnet details specific to each student
+                subnets = data['vpc_subnet_details']['value'].get(f'FL-SE-AZURE-vnet-{student_index + 1}', {}).get('subnets', {})
+                external_subnet = ', '.join(subnets.get('external', [['N/A']])[0])
+                internal_subnet = ', '.join(subnets.get('internal', [['N/A']])[0])
+                dmz_subnet = ', '.join(subnets.get('dmz', [['N/A']])[0])
 
                 # Append the formatted text for this student to the content string
                 content += f"""
@@ -177,11 +243,16 @@ class CONTROLLER:
                             Student {student_name}
                             VDI Machine - {student_vdi_ip}
                             Ubuntu Machine - {ubuntu_private_ip}
+                            CP Manager Public IP - {cp_manager_public_ip}
+                            CP Manager Private IP - {cp_manager_private_ip}
+                            CP Gateway Public IP - {cp_gateway_public_ip}
+                            CP Gateway Private IP - {cp_gateway_private_ip}
                             External Subnet - {external_subnet}
                             Internal Subnet - {internal_subnet}
                             DMZ Subnet - {dmz_subnet}
                             -----------------------------------------------
                             """
+
         # Write to the output file
         with open(output_filename, 'w') as output_file:
             output_file.write(content)
