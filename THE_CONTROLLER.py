@@ -78,16 +78,24 @@ class CONTROLLER:
                             f"ansible_ssh_private_key_file={ssh_key_file} "
                             f"ansible_user={ansible_user}\n")
                 
-    def azure_create_ansible_hosts_file(self, json_output_file, hosts_file, ansible_user, tfvars_file):
+    def azure_create_ansible_hosts_file(json_output_file, hosts_file, ansible_user, tfvars_file):
         # Read the JSON output file
         with open(json_output_file, 'r') as file:
             data = json.load(file)
+            
         # Extract Ubuntu Docker main public IPs
         ubuntu_ips = []
         ubuntu_docker_main_ips = data.get('ubuntu_docker_main_ips', {}).get('value', {})
         for key, ip_details in ubuntu_docker_main_ips.items():
             if "public_ip" in ip_details:
                 ubuntu_ips.append(ip_details['public_ip'])
+                
+        # Extract Checkpoint Firewall public IPs
+        checkpoint_fw_ips = data.get('checkpoint_firewall_details', {}).get('value', {}).get('public_ips', [])
+        
+        # Extract Checkpoint Management public IPs
+        checkpoint_mgmt_ips = data.get('checkpoint_mgmt_details', {}).get('value', {}).get('public_ip_addresses', [])
+        
         # Read the tfvars file to get the admin_password
         admin_password = None
         with open(tfvars_file, 'r') as file:
@@ -97,17 +105,34 @@ class CONTROLLER:
                 if match:
                     admin_password = match.group(1)
                     break
+                
         # Exit if admin_password is not found
         if admin_password is None:
             print("admin_password not found in tfvars file.")
             return
+        
         # Write to the hosts file
         with open(hosts_file, 'w') as file:
+            # Ubuntu Docker Main Machines Section
             file.write("[ubuntu_docker_main_machines]\n")
             for idx, ip in enumerate(ubuntu_ips):
                 file.write(f"server{idx+1} ansible_host={ip} "
-                        f"ansible_user={ansible_user} "
-                        f"ansible_ssh_pass={admin_password}\n")
+                           f"ansible_user={ansible_user} "
+                           f"ansible_ssh_pass={admin_password}\n")
+                
+            # Checkpoint Firewall Section
+            file.write("\n[checkpoint_firewall_details]\n")
+            for idx, ip in enumerate(checkpoint_fw_ips):
+                file.write(f"fw{idx+1} ansible_host={ip} "
+                           f"ansible_user={ansible_user} "
+                           f"ansible_ssh_pass={admin_password}\n")
+                
+            # Checkpoint Management Section
+            file.write("\n[checkpoint_mgmt_details]\n")
+            for idx, ip in enumerate(checkpoint_mgmt_ips):
+                file.write(f"mgmt{idx+1} ansible_host={ip} "
+                           f"ansible_user={ansible_user} "
+                           f"ansible_ssh_pass={admin_password}\n")
     
     def process_terraform_data(self, filename, output_filename):
         with open(filename, 'r') as file:
