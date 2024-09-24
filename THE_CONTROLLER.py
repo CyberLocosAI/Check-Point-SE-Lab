@@ -78,7 +78,7 @@ class CONTROLLER:
                             f"ansible_ssh_private_key_file={ssh_key_file} "
                             f"ansible_user={ansible_user}\n")
                 
-    def azure_create_ansible_hosts_file(json_output_file, hosts_file, ansible_user, tfvars_file):
+    def azure_create_ansible_hosts_file(self, json_output_file, hosts_file, ubuntu_ansible_user, cp_ansible_user, tfvars_file):
         # Read the JSON output file
         with open(json_output_file, 'r') as file:
             data = json.load(file)
@@ -117,21 +117,21 @@ class CONTROLLER:
             file.write("[ubuntu_docker_main_machines]\n")
             for idx, ip in enumerate(ubuntu_ips):
                 file.write(f"server{idx+1} ansible_host={ip} "
-                           f"ansible_user={ansible_user} "
+                           f"ansible_user={ubuntu_ansible_user} "
                            f"ansible_ssh_pass={admin_password}\n")
                 
             # Checkpoint Firewall Section
             file.write("\n[checkpoint_gateway_details]\n")
             for idx, ip in enumerate(checkpoint_fw_ips):
                 file.write(f"fw{idx+1} ansible_host={ip} "
-                           f"ansible_user={ansible_user} "
+                           f"ansible_user={cp_ansible_user} "
                            f"ansible_ssh_pass={admin_password}\n")
                 
             # Checkpoint Management Section
             file.write("\n[checkpoint_mgmt_details]\n")
             for idx, ip in enumerate(checkpoint_mgmt_ips):
                 file.write(f"mgmt{idx+1} ansible_host={ip} "
-                           f"ansible_user={ansible_user} "
+                           f"ansible_user={cp_ansible_user} "
                            f"ansible_ssh_pass={admin_password}\n")
     
     def process_terraform_data(self, filename, output_filename):
@@ -233,7 +233,8 @@ if __name__ == '__main__':
     ct.azure_create_ansible_hosts_file(
                     json_output_file='tf_outputs.json',  # Path to the Terraform output JSON file
                     hosts_file='core_machines.ini',  # Output Ansible hosts file
-                    ansible_user='instructor',  # Username to login.
+                    ubuntu_ansible_user='instructor',  # Username to login for ubuntu.
+                    cp_ansible_user='admin', # Username to login for ubuntu.
                     tfvars_file='terraform.tfvars'  # Terraform tfvars
                                             )
         ### Playbooks for Ubuntu Server
