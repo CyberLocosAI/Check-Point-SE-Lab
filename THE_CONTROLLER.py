@@ -85,8 +85,8 @@ class CONTROLLER:
             
         # Extract Ubuntu Docker main public IPs
         ubuntu_ips = []
-    _main_ips = data.get(_main_ips', {}).get('value', {})
-        for key, ip_details in_main_ips.items():
+        ubuntu_docker_main_ips = data.get('ubuntu_docker_main_ips', {}).get('value', {})
+        for key, ip_details in ubuntu_docker_main_ips.items():
             if "public_ip" in ip_details:
                 ubuntu_ips.append(ip_details['public_ip'])
                 
@@ -164,7 +164,7 @@ class CONTROLLER:
                 student_vdi_ip = student['Public_IP']
                 
                 # Assuming there is a corresponding ubuntu machine entry for each student
-                ubuntu_private_ip = data[_main_ips']['value'].get(f'ubuntu-docker-main-{student_index + 1}', {}).get('private_ip', 'N/A')
+                ubuntu_private_ip = data['ubuntu_docker_main_ips']['value'].get(f'ubuntu-docker-main-{student_index + 1}', {}).get('private_ip', 'N/A')
                 
                 subnets = data['vpc_subnet_details']['value']['FL-SE-AZURE-vnet-1']['subnets']
                 external_subnet = ', '.join(subnets['external'][0])
