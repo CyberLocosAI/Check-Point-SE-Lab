@@ -105,3 +105,13 @@ resource "azurerm_linux_virtual_machine" "checkpoint_vm" {
     create = "30m"  # Allow more time for VM creation in case of delays with IP, NSG, etc.
   }
 }
+
+# Output block
+output "checkpoint_mgmt_details" {
+  value = {
+    public_ip_addresses  = azurerm_public_ip.checkpoint_public_ip[*].ip_address
+    private_ip_addresses = azurerm_network_interface.checkpoint_nic[*].ip_configuration[0].private_ip_address
+    subnets              = azurerm_subnet.external[*].id
+    hostnames            = azurerm_linux_virtual_machine.checkpoint_vm[*].name
+  }
+}
