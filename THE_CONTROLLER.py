@@ -236,17 +236,19 @@ if __name__ == '__main__':
                     ansible_user='instructor',  # Username to login.
                     tfvars_file='terraform.tfvars'  # Terraform tfvars
                                             )
-        ### Playbooks for Ubuntu Server
+        ### Playbooks for Ubuntu Server Setup
     ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'core_ansible_create_docker_backbone.yaml'])
-    ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_ubuntu_attack.yaml'])
-    ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_apache_vuln.yaml'])
-    ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_webgoat.yaml'])
-    ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_metasploitable.yaml'])
-    ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_ftp_server.yaml'])
     
         ### Playbooks for Check Point Manager
 
         ### Playbooks for Check Point Firewall
+
+        ### Playbooks for WHALE
+    # ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_ubuntu_attack.yaml'])
+    # ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_apache_vuln.yaml'])
+    # ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_webgoat.yaml'])
+    # ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_metasploitable.yaml'])
+    # ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'whale_ansible_ftp_server.yaml'])
     
     ## Output Student Lab File
     ct.process_terraform_data('tf_outputs.json', 'STUDENT_LAB_INFO.txt')
