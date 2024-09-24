@@ -91,7 +91,7 @@ class CONTROLLER:
                 ubuntu_ips.append(ip_details['public_ip'])
                 
         # Extract Checkpoint Firewall public IPs
-        checkpoint_fw_ips = data.get('checkpoint_firewall_details', {}).get('value', {}).get('public_ips', [])
+        checkpoint_fw_ips = data.get('checkpoint_gateway_details', {}).get('value', {}).get('public_ips', [])
         
         # Extract Checkpoint Management public IPs
         checkpoint_mgmt_ips = data.get('checkpoint_mgmt_details', {}).get('value', {}).get('public_ip_addresses', [])
@@ -114,14 +114,14 @@ class CONTROLLER:
         # Write to the hosts file
         with open(hosts_file, 'w') as file:
             # Ubuntu Docker Main Machines Section
-            file.write("_main_machines]\n")
+            file.write("[ubuntu_docker_main_machines]\n")
             for idx, ip in enumerate(ubuntu_ips):
                 file.write(f"server{idx+1} ansible_host={ip} "
                            f"ansible_user={ansible_user} "
                            f"ansible_ssh_pass={admin_password}\n")
                 
             # Checkpoint Firewall Section
-            file.write("\n[checkpoint_firewall_details]\n")
+            file.write("\n[checkpoint_gateway_details]\n")
             for idx, ip in enumerate(checkpoint_fw_ips):
                 file.write(f"fw{idx+1} ansible_host={ip} "
                            f"ansible_user={ansible_user} "
