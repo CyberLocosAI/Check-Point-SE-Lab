@@ -236,7 +236,7 @@ if __name__ == '__main__':
                     ansible_user='instructor',  # Username to login.
                     tfvars_file='terraform.tfvars'  # Terraform tfvars
                                             )
-        ### Playbooks for Ubuntu Server Setup
+        ### Playbooks for Ubuntu Server
     ct.run_command(['ansible-playbook', '-i', 'core_machines.ini', 'core_ansible_create_docker_backbone.yaml'])
     
         ### Playbooks for Check Point Manager
