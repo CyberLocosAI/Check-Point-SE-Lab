@@ -1,0 +1,20 @@
+---
+- name: Initial setup for Check Point GAiA using clish
+  hosts: check_point
+  gather_facts: no
+  tasks:
+
+    - name: Lock database override
+      raw: lock database override
+      register: ldo_result
+      ignore_errors: true
+
+    - name: Set shell to bash
+      raw: set user admin shell /bin/bash
+      register: shell_change_result
+      ignore_errors: true
+
+    - name: Save Config
+      raw: save config
+      register: save_config_result
+      ignore_errors: true

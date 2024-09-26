@@ -1,0 +1,29 @@
+---
+- name: Initial setup for Check Point GAiA using clish
+  hosts: check_point
+  gather_facts: no
+  tasks:
+    
+    - name: FTC on Management Server
+      raw:  config_system --config-string "hostname=<hostname>&domainname=<domainname>&timezone='America/New_York'&ftw_sic_key=<sic_key>&install_security_gw=false&gateway_daip=false&install_ppak=true&gateway_cluster_member=false&install_security_managment=true&install_mgmt_primary=true&mgmt_admin_radio=gaia_admin&mgmt_gui_clients_radio=any&maintenance_hash=<maint_pass_hash>"
+      register: FTC_result
+      ignore_errors: true
+
+    - name: Wait until the FTW completes
+      stat:
+        path: "/etc/.wizard_accepted"
+      register: file_data
+      until: file_data.stat.exists
+      retries: 20
+      delay: 30
+      ignore_errors: true
+
+    - name: Waiting for 10 seconds before reboot
+      pause:
+        seconds: 10
+
+    - name: Rebooting
+      raw: "shutdown -r now"
+
+    
+    
